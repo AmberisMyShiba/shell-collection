@@ -1,2 +1,16 @@
-#query a package and its all dependency
-root@localhost ~ # equery d qtcore | sed 's/^ *\([^ ]*\)-[0-9].*/\1/' | sort -u |  tr '\n' ' '
+#query a package and its all dependency for unmerge
+user@localhost ~  sudo emerge -Ca $(equery d qtcore | sed 's/^ *\([^ ]*\)-[0-9].*/\1/' | sort -u |  tr '\n' ' ')
+
+# list smaba shareing 
+user@localhost ~  smbclient -L $IP/$HOSTNAME -U $USER%$PASSWORD
+
+# find out all outdate kernel or expired files and make a reverse deletetion
+user@localhost ~ sudo find /boot/ -maxdepth 1 -type f -not \( -name '*-4.19.97-*' -or -name '*.img' -or -name '*.cpio' \) -delete
+
+# Update and Compile a kernel sources
+root@localhost # cp /usr/src/linux-5.4.38-gentoo/.config /usr/src/linux/ && make olddefconfig && emerge -a @module-rebuild && make && make install && make modules_install
+
+#Recompile a OpenWrt firmware
+#user@localhost ~ make distclean  # this command will clean all of files compiled,and reset repositry .Don't use this command if it's not necessary
+user@localhost ~ ./scripts/feeds clear && ./scripts/feeds update -a && ./scripts/feeds install -a 
+user@localhost ~ make clean && make defconfig && make menuconfig

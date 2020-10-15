@@ -1,0 +1,2 @@
+#query a package and its all dependency
+root@localhost ~ # equery d qtcore | sed 's/^ *\([^ ]*\)-[0-9].*/\1/' | sort -u |  tr '\n' ' '

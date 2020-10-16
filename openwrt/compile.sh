@@ -1,3 +1,4 @@
+#!/bin/bash
 git pull
 #./scripts/feeds clean
 ./scripts/feeds update -a && ./scripts/feeds install -a

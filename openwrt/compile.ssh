@@ -1,0 +1,8 @@
+git pull
+#./scripts/feeds clean
+./scripts/feeds update -a && ./scripts/feeds install -a
+make clean 
+make menuconfig # set target 
+make defconfig #to set default config for build system and device
+scripts/diffconfig.sh > mydiffconfig #(save your changes in the text file mydiffconfig).
+make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | grep -i '[^_-"a-z]error[^_-.a-z]' 

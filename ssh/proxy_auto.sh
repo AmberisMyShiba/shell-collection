@@ -4,7 +4,7 @@
 #Date:Mon Nov 9 19  ^z50
 
 CADDY_STATUS1=$(systemctl status caddy |grep Active |awk '{print $3}'|cut -d "(" -f2 |cut -d ")" -f1)
-if [ "CADDY_STATUS" == "dead" ];then
+if [ "CADDY_STATUS1" == "dead" ];then
     echo "Caddy service is not running,It will be started Now!"
     systemctl start {caddy,v2ray,naiveproxy};else
     CADDY_STATUS2=$(systemctl status caddy |grep " - " |awk '{print $4,$5,$6,$7}')

@@ -14,3 +14,35 @@ root@localhost # cp /usr/src/linux-5.4.38-gentoo/.config /usr/src/linux/ && make
 #user@localhost ~ make distclean  # this command will clean all of files compiled,and reset repositry .Don't use this command if it's not necessary
 user@localhost ~ ./scripts/feeds clear && ./scripts/feeds update -a && ./scripts/feeds install -a 
 user@localhost ~ make clean && make defconfig && make menuconfig
+
+# sed replace ss-tproxy.conf 
+sed -i 's/proxy_svraddr4=(1.2.3.4)/proxy_svraddr4=(tefiszx.ga blurface.xyz)/g' /etc/ss-tproxy/ss-tproxy.conf
+sed -i "s/proxy_startcmd='cmd'/proxy_startcmd='systemctl start v2ray'/g" /etc/ss-tproxy/ss-tproxy.conf
+sed -i "s/proxy_stopcmd='cmd'/proxy_stopcmd='systemctl stop v2ray'/g" /etc/ss-tproxy/ss-tproxy.conf
+sed -i "s/dnsmasq_bind_port='53'/dnsmasq_bind_port='3553'/g" /etc/ss-tproxy/ss-tproxy.conf
+
+
+#upgrade and compile gentoo-sources
+#cp /usr/src/linux-5.4.38-gentoo/.config /usr/src/linux/
+make olddefconfig
+make && make install && make modules_install
+emerge -a @module-rebuild
+
+
+#compile openwrt
+git pull
+#./scripts/feeds clean
+./scripts/feeds update -a && ./scripts/feeds install -a
+make clean 
+make menuconfig # set target 
+make defconfig #to set default config for build system and device
+scripts/diffconfig.sh > mydiffconfig #(save your changes in the text file mydiffconfig).
+make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | fgrep -i '[^_-"a-z]error[^_-.a-z]' 
+
+#批量打补丁 batch patches
+for file in ./patches/*.diff;
+do
+echo -e "\033[1;32m $file \033[0m is patched\n";
+patch < $file ;
+done
+合并：for file in ~/dwm/patches/*.diff;do echo -e "\033[1;32m $file \033[0m is patched\n";patch < $file;done

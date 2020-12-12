@@ -1,0 +1,5 @@
+#urxvt要实现真透明
+#1. 要运行 xcompmgr
+#2. .Xdefaults里要有这两样设置：
+urxvt.depth: 32
+urxvt.background: [80]black

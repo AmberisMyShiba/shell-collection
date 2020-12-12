@@ -72,8 +72,7 @@ bindsym $sup+d exec "rofi -modi drun,run -show drun -sidebar-mode -terminal term
 #bindcode $mod+40 exec rofi -modi drun,run -show drun
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
-bindsym $sup+Shift+d exec --no-startup-id i3-dmenu-desktop
-
+bindsym $sup+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -p 'Gentoo' -fn 'Noto Sans Mono CJK SC:bold:size=14'"
 # change focus
 bindsym $sup+j focus left
 bindsym $sup+k focus down

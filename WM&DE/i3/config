@@ -46,6 +46,7 @@ exec_always --no-startup-id "picom -GCfb"
 #startup autologin
 exec firefox-bin
 exec urxvt
+exec --no-startup-id i3-msg 'workspace 2:Web; exec /usr/bin/firefox-bin'
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status

@@ -38,7 +38,7 @@ exec --no-startup-id "imwheel"
 exec --no-startup-id "numlockx &"
 
 # start wallpaper setting
-exec --no-startup-id "feh --randomize --bg-scale ~/Pictures/2020*.jpg"
+exec --no-startup-id "feh --randomize --bg-scale ~/图片/BingWallpaper/$(date -d "$D" '+%Y%m')*.jpg"
 
 # start picom
 exec_always --no-startup-id "picom -GCfb"

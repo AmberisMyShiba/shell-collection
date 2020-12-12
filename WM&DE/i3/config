@@ -15,7 +15,7 @@ set $sup Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Noto Sans Mono CJK SC 14
+font pango:Noto Sans Mono CJK SC 15
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -38,15 +38,15 @@ exec --no-startup-id "imwheel"
 exec --no-startup-id "numlockx &"
 
 # start wallpaper setting
-exec --no-startup-id "feh --randomize --bg-scale ~/图片/BingWallpaper/$(date -d "$D" '+%Y%m')*.jpg"
+exec --no-startup-id "feh --randomize --bg-scale ~/图片/BingWallpaper/$(date -d '$D' '+%Y%m')*.jpg"
 
 # start picom
 exec_always --no-startup-id "picom -GCfb"
+exec_always --no-startup-id "xcompmgr &"
 
 #startup autologin
-exec firefox-bin
-exec urxvt
-exec --no-startup-id i3-msg 'workspace 2:Web; exec /usr/bin/firefox-bin'
+#exec firefox-bin && exec urxvt
+exec --no-startup-id i3-msg 'workspace 1:Term; exec urxvt; exec firefox-bin; workspace 2:Web; exec /usr/bin/firefox-bin'
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -73,6 +73,7 @@ bindsym $sup+d exec "rofi -modi drun,run -show drun -sidebar-mode -terminal term
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 bindsym $sup+Shift+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -p 'Gentoo' -fn 'Noto Sans Mono CJK SC:bold:size=14'"
+
 # change focus
 bindsym $sup+j focus left
 bindsym $sup+k focus down

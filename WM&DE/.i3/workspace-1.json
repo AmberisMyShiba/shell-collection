@@ -1,0 +1,82 @@
+// this file genrated by command:i3-save-tree --workspace 1:Term > ~/.i3/workspace-1.json
+// you have to edit the class instance for all client init status
+// vim:ts=4:sw=4:et
+{
+    "border": "normal",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 1368,
+       "width": 636,
+       "x": 0,
+       "y": 0
+    },
+    "marks": [],
+    "name": "i3: Layout saving in i3 — Mozilla Firefox",
+    "percent": 0.5,
+    "swallows": [
+       {
+        "class": "^Firefox$",
+        "instance": "^Navigator$",
+        "title": "^Mozilla\\ Firefox$",
+        "window_role": "^browser$"
+       }
+    ],
+    "type": "con"
+}
+
+{
+    // splitv split container with 2 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "marks": [],
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 580,
+               "width": 724,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "tef@nuc8:~",
+            "percent": 0.5,
+            "swallows": [
+               {
+                "class": "^URxvt$",
+                "instance": "^urxvt$",
+                "title": "^tef\\@nuc8\\:\\~$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 580,
+               "width": 724,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "tef@nuc8:~",
+            "percent": 0.5,
+            "swallows": [
+               {
+                "class": "^URxvt$",
+                "instance": "^urxvt$",
+                "title": "^tef\\@nuc8\\:\\~$"
+               }
+            ],
+            "type": "con"
+        }
+    ]
+}

@@ -1,5 +1,6 @@
 #urxvt要实现真透明
 #1. 要运行 picom（配合picom.conf) 或者 xcompmgr
 #2. .Xdefaults里要有这两样设置：
+#3. urxvtconfig命令里是否设置真透明不影响以上设置，只要运行picom，不勾选真透明也能透明
 urxvt.depth: 32
 urxvt.background: [80]black

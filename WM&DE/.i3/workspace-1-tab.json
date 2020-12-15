@@ -1,0 +1,90 @@
+// vim:ts=4:sw=4:et
+{
+    // tabbed split container with 2 children
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "tabbed",
+    "marks": [],
+    "percent": null,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 708,
+               "width": 679,
+               "x": 0,
+               "y": 0
+            },
+            "marks": [],
+            "name": "Mozilla Firefox",
+            "percent": 0.609077598828697,
+            "swallows": [
+               {
+                "class": "^Firefox$",
+                "instance": "^Navigator$",
+                "title": "^Mozilla\\ Firefox$",
+                "window_role": "^browser$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            // splith split container with 2 children
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splith",
+            "marks": [],
+            "percent": 0.390922401171303,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 412,
+                       "width": 644,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "marks": [],
+                    "name": "rohk@a45v:~",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^URxvt$",
+                        "instance": "^urxvt$",
+                        "title": "^rohk\\@a45v\\:\\~$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 412,
+                       "width": 644,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "marks": [],
+                    "name": "rohk@a45v:~",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^URxvt$",
+                        "instance": "^urxvt$",
+                        "title": "^rohk\\@a45v\\:\\~$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}

@@ -29,7 +29,7 @@ margin = 3
 [bar/i3bar]
 background = ${colors.xbg}
 foreground = ${colors.xfg}
-bottom = true
+
 width = 100%
 height = 30
 ;offset-y = 10
@@ -42,7 +42,7 @@ border-bottom-size = 5
 border-right-size = 0
 border-left-size = 0
 
-# bottom = true
+bottom = true
 wm-restack = i3
 #override-redirect = true
 
@@ -57,7 +57,7 @@ module-margin-right = 0
 
 modules-left = i3 right mpd
 modules-center = date 
-modules-right = netspeed memory cpu battery  line xbacklight pulseaudio  headphone 
+modules-right = lan memory filesystem line cpu temperature line pulseaudio 
 overline-size = 6
 overline-color=${colors.xbs}
 underline-size = 3
@@ -313,6 +313,22 @@ format-connected-padding = ${variables.mpadding}
 format-connected-background=${colors.xbg2}
 label-connected = " 􀁶%upspeed%  􀁸%downspeed%"
 
+[module/filesystem]
+type = internal/fs
+interval = 600
+mount-0 = /
+;mount-1 = /tmp
+;mount-2 = /home
+label-mounted = Disk%{F#0a81f5}%mountpoint%%{F-}:%{F#0a81f5} %percentage_used%%
+
+[module/lan]
+type = internal/network
+interface = enp2s0
+interval = 1.0
+label-connected = "%ifname%: %local_ip% | "
+;label-connected = "%ifname%: %local_ip% %local_ip6% | "
+label-disconnected = "%ifname%: not connected | "
+
 [module/wlan]
 type = internal/network
 interface = wlp2s0
@@ -386,8 +402,8 @@ format-warn =<label-warn>
 format-warn-padding = ${variables.mpadding}
 format-warn-background=${colors.xbg2}
 format-warn-underline = #ff0000
-label = %temperature-c%
-label-warn = %temperature-c%
+label = Temp:%{F#87a566}%temperature-c%
+label-warn = Temp:%{F#eb0029}%temperature-c%
 
 [module/cpu]
 format-padding = ${variables.mpadding}
@@ -395,12 +411,12 @@ format-background=${colors.xbg2}
 type = internal/cpu
 interval = 2
 format-prefix = "􀓘 "
-label = %percentage%%
+label = Cpu:%{F#E85D00}%percentage%%
 
 [module/memory]
 format-padding = ${variables.mpadding}
 format-background=${colors.xbg2}
 type = internal/memory
 interval = 2
-label = %percentage_used%%
+label = Ram:%{F#7851a9}%percentage_used%%
 format-prefix = "􀌈 "

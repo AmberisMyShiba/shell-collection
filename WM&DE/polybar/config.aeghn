@@ -29,7 +29,7 @@ margin = 3
 [bar/i3bar]
 background = ${colors.xbg}
 foreground = ${colors.xfg}
-
+bottom = true
 width = 100%
 height = 30
 ;offset-y = 10

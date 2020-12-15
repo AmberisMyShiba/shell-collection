@@ -56,8 +56,8 @@ module-margin-left = 0
 module-margin-right = 0 
 
 modules-left = i3 right mpd
-modules-center = date 
-modules-right = lan memory filesystem line cpu temperature line pulseaudio 
+#modules-center = date 
+modules-right = lan memory filesystem line cpu temperature line pulseaudio line date 
 overline-size = 6
 overline-color=${colors.xbs}
 underline-size = 3

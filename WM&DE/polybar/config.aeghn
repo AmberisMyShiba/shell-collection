@@ -31,7 +31,7 @@ background = ${colors.xbg}
 foreground = ${colors.xfg}
 
 width = 100%
-height = 30
+height = 20
 ;offset-y = 10
 ;offset-x = 20
 
@@ -43,13 +43,14 @@ border-right-size = 0
 border-left-size = 0
 
 bottom = true
-wm-restack = i3
+#wm-restack = i3
 #override-redirect = true
 
 font-0 = "SF Pro Display:style=Regular:size=11;3"
-font-1 = "Font Awesome 5 Free Solid:style=Solid:size=11;4"
-font-2 = "Font Awesome 5 Free Regular:style=Regular:size=11;4"
-font-3 = "Font Awesome 5 Brands Regular:style=Regular:size=11;4"
+font-1 = "Noto Sans Mono CJK SC:style=Regular:size=8;6"
+font-2 = "Font Awesome 5 Free Solid:style=Solid:size=11;4"
+font-3 = "Font Awesome 5 Free Regular:style=Regular:size=11;4"
+font-4 = "Font Awesome 5 Brands Regular:style=Regular:size=11;4"
 
 fixed-center = true
 spacing = 0
@@ -60,16 +61,16 @@ module-margin-right = 0
 
 modules-left = i3 right mpd
 #modules-center = date 
-modules-right = lan memory cpu temperature filesystem volume line date line poweroff line
+modules-right = lan memory-plus cpu-plus temperature filesystem line date line volume poweroff line
 overline-size = 6
 overline-color=${colors.xbs}
 underline-size = 3
 underline-color=${colors.xbs}
 
-tray-maxsize = 22
+tray-maxsize = 25
 tray-padding = 6
 tray-position = right
-#tray-background = ${colors.xbg2}
+tray-background = ${colors.xbg}
 
 enable-ipc = true
 border-color =${colors.xbg}
@@ -134,10 +135,10 @@ type = internal/i3
 ; on different bars
 ;
 ; Default: false
-pin-workspaces = true
+pin-workspaces = false
 ; This will split the workspace name on ':'
 ; Default: false
-strip-wsnumbers = true
+strip-wsnumbers = false
 ; Sort the workspaces by index instead of the default
 ; sorting that groups the workspaces by output
 ; Default: false
@@ -233,7 +234,6 @@ label-urgent-padding = 3
 [module/bspwm]
 type = internal/bspwm
 
-
 ws-icon-0 = 1;1
 #α
 ws-icon-1 = 2;2
@@ -275,13 +275,13 @@ label-empty-padding = 4
 type = internal/mpd
 format-online =" <toggle> <icon-single> <icon-next>  "  
 format-online-background = ${colors.xbg2}
-icon-prev = "􀊍"
-icon-stop = "􀑋"
-icon-play = "􀊃"
-icon-pause = "􀊅"
-icon-next = "􀊏"
-icon-random = "􀊝"
-icon-single = "􀎀"
+icon-prev = ""
+icon-stop = ""
+icon-play = ""
+icon-pause = ""
+icon-next = ""
+icon-random = ""
+icon-single = ""
 label-song-maxlen = 20
 label-song-ellipsis = true
 toggle-on-foreground = #ff
@@ -428,6 +428,36 @@ ramp-capacity-2 = "  "
 animation-charging-0 = " "
 animation-charging-framerate = 500
 
+;;; battery {{{
+[module/battery-plus]
+type = internal/battery
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+format-full = %{F#666}%{F#ccfafafa} <label-full>
+#label-charging-font = 3
+#label-discharing-font = 3
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+; low power alert
+ramp-capacity-0-foreground = #ff5555
+
+; it will display over the three pattern when charing
+; at a framerate 750
+; and each has a foreground color
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-2-foreground = #aaff77
+animation-charging-1-foreground = #fba922
+animation-charging-0-foreground = #ff5555
+animation-charging-framerate = 750
+;;; }}}
+
+
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
@@ -454,11 +484,127 @@ format-prefix = " "
 label = :%percentage%%
 ;%{F#E85D00}
 
-[module/memory]
-format-padding = ${variables.mpadding}
-format-background=${colors.xbg2}
+;;; CPU usage {{{
+[module/cpu-plus]
+type = internal/cpu
+interval = 3.0
+format = <label><ramp-load>
+format-prefix = " "
+label = %percentage%%
+; Spacing between individual per-core ramps
+ramp-coreload-spacing = 1
+ramp-coreload-0 = "▁"
+ramp-coreload-1 = "▂"
+ramp-coreload-2 = "▃"
+ramp-coreload-3 = "▄"
+ramp-coreload-4 = "▅"
+ramp-coreload-5 = "▆"
+ramp-coreload-6 = "▇"
+ramp-coreload-7 = "█"
+
+; ramps for ramp-load
+ramp-load-0 = "▁"
+ramp-load-1 = "▂"
+ramp-load-2 = "▃"
+ramp-load-3 = "▄"
+ramp-load-4 = "▅"
+ramp-load-5 = "▆"
+ramp-load-6 = "▇"
+ramp-load-7 = "█"
+
+; colors for each ramp
+ramp-load-0-foreground = #aaff77
+ramp-load-1-foreground = #aaff77
+ramp-load-2-foreground = #aaff77
+ramp-load-3-foreground = #aaff77
+ramp-load-4-foreground = #fba922
+ramp-load-5-foreground = #fba922
+ramp-load-6-foreground = #ff5555
+ramp-load-7-foreground = #ff5555
+;;; }}}
+;%{F#E85D00}
+
+[module/memory-plus]
 type = internal/memory
-interval = 5
-label = :%percentage_used%%
-format-prefix = " "
+interval = 3.0
+; Available tags:
+;   <label> (default)
+;   <bar-used>
+;   <bar-free>
+;   <ramp-used>
+;   <ramp-free>
+;   <bar-swap-used>
+;   <bar-swap-free>
+;   <ramp-swap-used>
+;   <ramp-swap-free>
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;   %percentage_swap_used%
+;   %percentage_swap_free%
+;   %mb_swap_total%
+;   %mb_swap_free%
+;   %mb_swap_used%
+;   %gb_swap_total%
+;   %gb_swap_free%
+;   %gb_swap_used%
+
+format = <label><ramp-used>
+label =  :%percentage_used%%
+;label-font = 3
+
+; Only applies if <bar-used> is used
+bar-used-indicator =
+bar-used-width = 50
+bar-used-foreground-0 = #55aa55
+bar-used-foreground-1 = #557755
+bar-used-foreground-2 = #f5a70a
+bar-used-foreground-3 = #ff5555
+bar-used-fill = ▐
+bar-used-empty = ▐
+bar-used-empty-foreground = #444444
+
+; Only applies if <ramp-used> is used
+ramp-used-0 = "▁"
+ramp-used-1 = "▂"
+ramp-used-2 = "▃"
+ramp-used-3 = "▄"
+ramp-used-4 = "▅"
+ramp-used-5 = "▆"
+ramp-used-6 = "▇"
+ramp-used-7 = "█"
+ramp-used-0-foreground = #aaff77
+ramp-used-1-foreground = #aaff77
+ramp-used-2-foreground = #aaff77
+ramp-used-3-foreground = #aaff77
+ramp-used-4-foreground = #fba922
+ramp-used-5-foreground = #fba922
+ramp-used-6-foreground = #ff5555
+ramp-used-7-foreground = #ff5555
+
+; Only applies if <ramp-free> is used
+ramp-free-0 = "▁"
+ramp-free-1 = "▂"
+ramp-free-2 = "▃"
+ramp-free-3 = "▄"
+ramp-free-4 = "▅"
+ramp-free-5 = "▆"
+ramp-free-6 = "▇"
+ramp-free-7 = "█"
+;;; }}}
+
+
+;[module/memory]
+;format-padding = ${variables.mpadding}
+;format-background=${colors.xbg2}
+;type = internal/memory
+;interval = 5
+;label = :%percentage_used%%
+;format-prefix = " "
 ;%{F#7851a9}

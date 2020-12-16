@@ -450,8 +450,8 @@ format-background=${colors.xbg2}
 type = internal/cpu
 interval = 2
 format-prefix = "􀓘 "
-label = :%percentage%%
-;%{F#E85D00}
+label = :%percentage%%
+;%{F#E85D00}
 
 [module/memory]
 format-padding = ${variables.mpadding}

@@ -60,7 +60,7 @@ module-margin-right = 0
 
 modules-left = i3 right mpd
 #modules-center = date 
-modules-right = lan memory cpu temperature line filesystem line pulseaudio line date 
+modules-right = lan memory cpu temperature filesystem volume line date line poweroff line
 overline-size = 6
 overline-color=${colors.xbs}
 underline-size = 3
@@ -328,15 +328,15 @@ label-mounted = :%mountpoint%%{F-}:%percentage_used%%
 
 [module/poweroff]
 type = custom/script
-exec = echo "  "
+exec = echo "  "
 click-left = rofi -modi run,drun,window -show drun
-click-right = i3lock-fancy -pg &
-click-middle = /usr/bin/rofi-logout
+click-right = i3lock -p default -i /home/rohk/Pictures/LasCatedralesBeach_ZH-CN5680206879_1920x1080.jpg &
+click-middle = i3-msg exit
 format-padding = 1
 
 [module/rofi]
 type = custom/script
-exec = echo "  "
+exec = echo "  "
 click-left = rofi -modi run,drun,window -show drun
 format-padding = 1
 
@@ -444,13 +444,14 @@ format-warn-underline = #ff0000
 label = :%temperature-c%
 label-warn = :%temperature-c%
 ;%{F#87a566}绿色;%{F#eb0029}桔色
+
 [module/cpu]
 format-padding = ${variables.mpadding}
 format-background=${colors.xbg2}
 type = internal/cpu
 interval = 2
-format-prefix = "􀓘 "
-label = :%percentage%%
+format-prefix = " "
+label = :%percentage%%
 ;%{F#E85D00}
 
 [module/memory]

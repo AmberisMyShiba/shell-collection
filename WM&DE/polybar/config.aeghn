@@ -437,13 +437,13 @@ format-padding = ${variables.mpadding}
 format-background=${colors.xbg2}
 format-prefix = " "
 format-warn-prefix = " "
-format-warn =<label-warn> 
+format-warn = %{F#eb0029}<label-warn> 
 format-warn-padding = ${variables.mpadding}
 format-warn-background=${colors.xbg2}
 format-warn-underline = #ff0000
 label = :%temperature-c%
 label-warn = :%temperature-c%
-;%{F#87a566}桔色;%{F#eb0029}红色
+;%{F#87a566}绿色;%{F#eb0029}桔色
 [module/cpu]
 format-padding = ${variables.mpadding}
 format-background=${colors.xbg2}

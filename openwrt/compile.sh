@@ -1,12 +1,21 @@
 #!/bin/bash
-
+echo -e "pull sources from repository"
 git pull
-./scripts/feeds clean
-./scripts/feeds update -a && ./scripts/feeds install -a
-#make menuconfig # set target 
-#scripts/diffconfig.sh > mydiffconfig #(save your changes in the text file mydiffconfig).
-make clean 
-cp x86_64_diff.config .config
-make defconfig #to set default config for build system and device
-make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | grep -i '[^_-"a-z]error[^_-.a-z]' 
+echo -e
+echo -e "update and install all feeds"
+echo -e 
+./scripts/feeds update -a
+./scripts/feeds install -a
+echo -e
+echo -e "prepearing for make compile"
+make clean
+make defconfig
 
+#echo -n "Do you want to menuconfig?(y/n)"
+read -s -t10 -p "Do you wanna menuconfig?(y/n)" ac
+if [ $ac = "y" ]; then
+    make menuconfig
+fi
+echo -e "Downloading feeds and sources"
+make download V=sc
+make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | fgrep -i '[^_-"a-z]error[^_-.a-z]' 

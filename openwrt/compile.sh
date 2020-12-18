@@ -12,19 +12,25 @@ make clean
 make defconfig
 
 #echo -n "Do you want to menuconfig?(y/n)"
-read -p "Do you wanna menuconfig?(y/n)" ac
+default="y"
+read -e -p "Do you wanna menuconfig?(y/n)" ac
+ac="${ac:-${default}}"
+#echo $ac
     case $ac in
     	y|Y)
 		make menuconfig;;
 		*)
-		exit 0
+#		exit 0
 	esac
 echo -e "Downloading feeds and sources"
-#echo -n "Do you want to Compile now?(y/n)"
-read -p "Do you want to Compile now?(y/n)" ac
+default="Y"
+read -e -p "Compile firmware right now?(y/n)" ac
+ac="${ac:-${default}}"
+#echo $ac
     case $ac in
        	y|Y)
-       	make download V=sc;;
+       	make download V=sc
+		make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | fgrep -i '[^_-"a-z]error[^_-.a-z]' ;;
        	*)
        	exit 0
     esac

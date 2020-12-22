@@ -10,3 +10,12 @@ for n in $args2
   do
     echo -e "Name of the script("\$args[n]"):$n"
   done
+
+index=1                       #将计数器设置为1
+echo "listing args with \"\$@\":"    #在"$@"中遍历参数
+for n in "$@"
+do
+  echo "arg: $index = $n"
+  let index+=1
+done
+

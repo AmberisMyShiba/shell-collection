@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# this script is a decration of bottom bar for dwm
 let loop=0
 while true; do
 	if [[ $loop%300 -eq 0 ]]; then

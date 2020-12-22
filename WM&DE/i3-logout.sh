@@ -15,11 +15,11 @@ i3-msg exit
 Here is a simple rofi logout script that I’m using on my i3 setup.
 
 Put it in place and bind it to a shortcut.
-For i3 e.g.: “bindsym $mod+Shift+e exec ~/.bin/rofi-logout”
+For i3 e.g.: "bindsym $mod+Shift+e exec ~/.bin/rofi-logout"
 
 #!/bin/bash
 
-cmd=$(echo -e “suspend\nlogout\nreboot\npoweroff” | rofi -width 350 -dmenu -p system:)
+cmd=$(echo -e "suspend\nlogout\nreboot\npoweroff" | rofi -width 350 -dmenu -p system:)
 case $cmd in
 suspend)
 systemctl suspend ;;

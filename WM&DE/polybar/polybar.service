@@ -1,0 +1,33 @@
+I was running into the same issue. My work-around is to use systemd. I have polybar and all my "startup" processes running as systemd services. Then I bind apps that lose their trays to polybar, so that when it restarts they restart. For example:
+
+rescuetime.service
+
+[Unit]
+Description=Rescuetime
+After=started.target polybar.service
+PartOf=graphical-session.target polybar.service
+
+[Service]
+ExecStart=/usr/bin/rescuetime
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=started.target
+
+polybar.service
+
+[Unit]
+Description=Launch polybar
+After=compton.service
+PartOf=i3.target
+
+[Service]
+ExecStart=/usr/local/bin/polybar -l error example
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=i3.target
+
+Hope this is useful to someone else here!

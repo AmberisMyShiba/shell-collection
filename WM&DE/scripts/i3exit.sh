@@ -1,14 +1,18 @@
+
 #!/bin/bash
 
 cmd=$(echo -e "lockscreen\nlogout\nreboot\npoweroff" | rofi -width 300 -dmenu -p system:)
 case $cmd in
 lockscreen)
-i3lock -p default -i /home/rohk/Pictures/LasCatedralesBeach_ZH-CN5680206879_1920x1080.jpg & ;;
+i3lock -p default -i /home/tef/Pictures/LasCatedralesBeach_ZH-CN5680206879_1920x1080.jpg & ;;
 logout)
+i3-msg '[class=".*"] kill'
 i3-msg exit ;;
 reboot)
+i3-msg '[class=".*"] kill'
 systemctl reboot ;;
 poweroff)
+i3-msg '[class=".*"] kill'
 systemctl poweroff ;;
 esac
 

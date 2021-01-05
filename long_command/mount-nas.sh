@@ -26,16 +26,17 @@ Specify the COMMADN default as blank, it will auto detect and exec mount/umount
 EOF
 }
 mountnas() {
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/video /mnt/networkshare/nas-video
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,rw,file_mode=0777,dir_mode=0777,setuid=509,setgid=101 //192.168.5.168/video /mnt/networkshare/nas-video
+#其中，uid=509, gid=101是一个普通用户dba  
 #sleep 1
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,rw,file_mode=0777,dir_mode=0777,setuid=509,setgid=101 //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,rw,file_mode=0777,dir_mode=0777,setuid=509,setgid=101 //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
 if mount | grep /mnt/networkshare/nas > /dev/null; then
     echo "$(font_bold "It seems like NAS sharing already mounted!")"
 else
-    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/video /mnt/networkshare/nas-video
-mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,rw,file_mode=0777,dir_mode=0777 //192.168.5.168/video /mnt/networkshare/nas-video
+mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,rw,file_mode=0777,dir_mode=0777 //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
+mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,rw,file_mode=0777,dir_mode=0777 //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
     echo "$(color_green "NAS Sharing folders is Mounted")"
 fi
 }

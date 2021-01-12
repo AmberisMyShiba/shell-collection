@@ -1,0 +1,66 @@
+ ##cat sed_test.txt | sed 's/^>=//'| sed 's/^ *\([^ ]*\)-[0-9].*/\1 abi_x86_32/'|sed '/^#/d'
+ 
+ 
+ the contend of set_test.txt like following
+ >=dev-lang/rust-bin-1.48.0 abi_x86_32
+# required by sys-devel/gettext-0.21::gentoo
+# required by dev-libs/atk-2.36.0::gentoo
+# required by app-accessibility/at-spi2-atk-2.38.0::gentoo
+# required by x11-libs/gtk+-3.24.24-r1::gentoo[X]
+# required by net-dns/avahi-0.8-r2::gentoo[gtk]
+# required by net-print/cups-2.3.3-r1::gentoo[zeroconf]
+# required by net-fs/samba-4.13.3::gentoo[cups]
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[samba]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=virtual/libintl-0-r2 abi_x86_32
+# required by media-plugins/gst-plugins-meta-1.16.2::gentoo[cdda]
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[gstreamer]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=media-plugins/gst-plugins-cdparanoia-1.16.2 abi_x86_32
+# required by media-plugins/gst-plugins-cdparanoia-1.16.2::gentoo
+# required by media-plugins/gst-plugins-meta-1.16.2::gentoo[cdda]
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[gstreamer]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=media-sound/cdparanoia-3.10.2-r7 abi_x86_32
+# required by sys-devel/gettext-0.21::gentoo
+# required by dev-libs/atk-2.36.0::gentoo
+# required by app-accessibility/at-spi2-atk-2.38.0::gentoo
+# required by x11-libs/gtk+-3.24.24-r1::gentoo[X]
+# required by net-dns/avahi-0.8-r2::gentoo[gtk]
+# required by net-print/cups-2.3.3-r1::gentoo[zeroconf]
+# required by net-fs/samba-4.13.3::gentoo[cups]
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[samba]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=virtual/libiconv-0-r2 abi_x86_32
+# required by sys-libs/pam-1.5.1::gentoo
+# required by sys-apps/util-linux-2.36.1-r1::gentoo[pam]
+# required by media-libs/fontconfig-2.13.1-r2::gentoo
+# required by x11-libs/gtk+-3.24.24-r1::gentoo
+# required by net-dns/avahi-0.8-r2::gentoo[gtk]
+# required by net-print/cups-2.3.3-r1::gentoo[zeroconf]
+# required by net-fs/samba-4.13.3::gentoo[cups]
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[samba]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=virtual/libcrypt-1-r1 abi_x86_32
+# required by media-libs/glu-9.0.1::gentoo
+# required by virtual/glu-9.0-r2::gentoo
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[opengl]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=virtual/opengl-7.0-r2 abi_x86_32
+# required by media-libs/libsdl2-2.0.14-r1::gentoo[opengl]
+# required by app-emulation/faudio-21.01::gentoo
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[faudio]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=virtual/glu-9.0-r2 abi_x86_32
+# required by virtual/glu-9.0-r2::gentoo
+# required by app-emulation/wine-vanilla-5.22-r2::gentoo[opengl]
+# required by virtual/wine-0-r7::gentoo
+# required by wine (argument)
+>=media-libs/glu-9.0.1 abi_x86_32

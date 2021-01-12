@@ -1,7 +1,7 @@
  #cat sed_test.txt | sed 's/^>=//'| sed 's/^ *\([^ ]*\)-[0-9].*/\1 abi_x86_32/'|sed '/^#/d'
  
  
- the contend of set_test.txt like following
+ the content of set_test.txt like following
  >=dev-lang/rust-bin-1.48.0 abi_x86_32
 # required by sys-devel/gettext-0.21::gentoo
 # required by dev-libs/atk-2.36.0::gentoo

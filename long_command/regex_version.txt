@@ -1,5 +1,10 @@
+sed:
+echo -e "dev-python/pygobject-3.29.1-r3 \ndev-python/ppp-2.0 \ndev-python/ppp-2.0.5\n" | sed 's/
+
+
 regex:
-((-\d)+(.*))
+1st:(-\d+.\d+.\d+)
+2nd:(-\d+.\d+.\d-\w+)
 
 package name and version:
 

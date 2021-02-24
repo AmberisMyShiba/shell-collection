@@ -5,10 +5,10 @@
 
 #CADDY_STATUS1=$(systemctl status caddy |grep Active |awk '{print $3}'|cut -d "(" -f2 |cut -d ")" -f1)
 WH_STATUS1=$(systemctl status nginx |grep Active |awk '{print $3}'|cut -d "(" -f2 |cut -d ")" -f1)
-if [ "$WH_STATUS1" == "dead" ]; then
-	echo "Webhosting service:Nginx is dead,It will be started Now!"
+if [ "$WH_STATUS1" == "running" ]; then
+	echo "Webhosting service:Nginx is running,It will be stoped Now!"
 #	systemctl stop {caddy,v2ray,naiveproxy,shadowsocks}
-	systemctl start {nginx,xray}
+	systemctl stop {nginx,xray}
 else
 #	CADDY_STATUS2=$(systemctl status caddy |grep " - " |awk '{print $4,$5,$6,$7}')
 	WH_STATUS2=$(systemctl status nginx |grep " - " |awk '{print $4,$5,$6,$7,$8,$9,$10}')

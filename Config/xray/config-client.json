@@ -1,0 +1,158 @@
+{
+  "log": {
+    "access": "",
+    "error": "",
+    "loglevel": ""
+  },
+  "inbounds": [
+    {
+      "port": 8010,
+      "listen": "0.0.0.0",
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "clients": null
+      },
+      "streamSettings": null
+    },
+    {
+      "port": 60080,
+      "listen": "0.0.0.0",
+      "protocol": "dokodemo-door",
+      "settings": {
+        "network": "tcp,udp",
+        "followRedirect": true
+      },
+      "streamSettings": {
+        "sockopt ": {
+          "tproxy": "redirect"
+        }
+      }
+    }
+  ],
+  "inboundDetour": [
+    {
+      "port": 1090,
+      "protocol": "http",
+      "settings": {
+        "udp": true,
+        "auth": "noauth",
+        "clients": null
+      },
+      "listen": "0.0.0.0",
+      "streamSettings": null
+    },
+    {
+      "port": 1095,
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth",
+        "clients": null
+      },
+      "listen": "0.0.0.0",
+      "streamSettings": null
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "blurface.xyz",
+            "port": 443,
+            "users": [
+              {
+                "alterid": 0,
+                "encryption": "none",
+                "flow": "xtls-rprx-direct",
+                "id": "a1c04f96-5573-4d86-a0f8-1c15b4d4ab34",
+                "level": 8,
+                "security": "auto"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "serverName": "www.blurface.xyz",
+          "allowInsecure": false
+        }
+      },
+      "mux": {
+        "enabled": false,
+        "concurrency": -1
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "response": {
+        "type": "http"
+      },
+      "settings": {}
+    }
+  ],
+  "dns": {
+    "hosts": {
+      "domain:googleapis.cn": "googleapis.com"
+    },
+    "servers": [
+      "223.5.5.5",
+      {
+        "address": "https://1.1.1.1/dns-query",
+        "domains": [
+          "geosite:geolocation-!cn"
+        ]
+      },
+      {
+        "address": "https+local://233.5.5.5/dns-query",
+        "port": 53,
+        "domains": [
+          "geosite:cn"
+        ],
+        "expectIPs": [
+          "geoip:cn"
+        ]
+      }
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:cn"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:cn",
+          "geoip:private",
+          "45.32.164.128",
+          "173.242.112.62"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "proxy",
+        "network": "udp,tcp"
+      }
+    ]
+  }
+}

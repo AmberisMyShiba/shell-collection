@@ -1,11 +1,8 @@
 #!/bin/bash
-
 get_latest_release() {
-  url="https://api.github.com/repos/"$1"/release/latest"
-#  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-#    curl --silent $url |
-#    grep '"tag_name":' |                                            # Get tag line
-#    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+    curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
 
 usage() {
@@ -23,12 +20,11 @@ main() {
         usage
     exit
     else
-#        echo $1
-        echo 'https://api.github.com/repos/$1/releases/latest'
-        get_latest_release
-        echo $url
-
+        curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+        grep '"tag_name":' |                                            # Get tag line
+        sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
     fi
 }
 
 main "$@"
+

@@ -29,8 +29,7 @@ ac="${ac:-${default}}"
 #echo $ac
     case $ac in
        	y|Y)
-       	make download V=sc
-		make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | fgrep -i '[^_-"a-z]error[^_-.a-z]' ;;
+       	time make download V=sc
+	time make -j$(($(nproc)+1)) || make V=s 2>&1 | tee build.log | fgrep -i '[^_-"a-z]error[^_-.a-z]' ;;
        	*)
-       	exit 0
     esac

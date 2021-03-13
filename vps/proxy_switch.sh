@@ -31,19 +31,26 @@ EOF
 }
 
 go_caddy() {
-echo "$fond_bold $(color_red "Systemctl Disable nginx now and Stopping Xray.")" && exit 1
-systemctl disable --now {nginx,xray}
-echo "$fond_bold $(color_yellow "Systemctl Enable Caddy now and Starting naive/v2ray.")" && exit 1
+echo "$fond_bold $(color_red "Systemctl Disable nginx now and Stopping Xray.")" 
+systemctl stop {nginx,xray}
+sleep 2
+systemctl disable {nginx,xray}
+echo "$fond_bold $(color_yellow "Systemctl Enable Caddy now and Starting naive/v2ray.")"
 sleep 3
-systemctl enable --now {caddy,v2ray,naiveproxy}
+systemctl enable {caddy,v2ray,naiveproxy}
+sleep 2
+systemctl start {caddy,naiveproxy,v2ray}
 }
 
 go_nginx() {
-echo "$fond_bold $(color_red "Systemctl Disable Caddy now and Stopping V2ray/navie.")" && exit 1
-systemctl disable --now {caddy,v2ray,naiveproxy}
-echo "$fond_bold $(color_yellow "Systemctl Enable Nginx now and Starting Xray.")" && exit 1
+echo "$fond_bold $(color_red "Systemctl Disable Caddy now and Stopping V2ray/navie.")"
+systemctl stop {caddy,naiveproxy,v2ray}
 sleep 3
-systemctl enable --now {nginx,xray}
+systemctl disable {caddy,v2ray,naiveproxy}
+echo "$fond_bold $(color_yellow "Systemctl Enable Nginx now and Starting Xray.")"
+sleep 3
+systemctl start {nginx,xray}
+systemctl enable {nginx,xray}
 }
 
 main() {

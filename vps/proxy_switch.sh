@@ -17,7 +17,7 @@ color_yellow() {
 help_msg() {
 cat << 'EOF'
 Useage:proxy_switch.sh <proxy>
-The options of <proxy> are :(<caddy> or <nginx>) 
+The options of <proxy> are :(<caddy> or <nginx>)
 This VPS has been installed proxy applicaions are:[naive] [v2ray] and [xray]
 This VPS has been installed web service are caddy and nginx
 
@@ -28,6 +28,7 @@ If proxy switch to xray reversely,it will disable Caddy/{navie,v2ray},meanwhile 
 
 help yourself and enjoy it!
 EOF
+}
 
 go_caddy() {
 echo "$fond_bold $(color_red "Systemctl Disable nginx now and Stopping Xray.")" && exit 1
@@ -47,12 +48,12 @@ systemctl enable --now {nginx,xray}
 
 main() {
 # Make sure only root can run our script
-[ `whoami` != "root" ] && echo "$fond_bold $(color_yellow "This script must be run as root.")" && exit 1 
-if [ $# -eq 0 ] && help_msg
+[ `whoami` != "root" ] && echo "$fond_bold $(color_yellow "This script must be run as root.")" && exit 1
+if [ $# -eq 0 ]; then help_msg; exit 1;fi
 case $1 in
-	caddy|naive|v2ray) 	go_caddy;;
-	nginx|xray) 		go_nginx;;
-	*) 			help_msg;;
+    caddy|naive|v2ray)  go_caddy;;
+    nginx|xray)         go_nginx;;
+    *)                  help_msg;;
 esac
 return 0
 }

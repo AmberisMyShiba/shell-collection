@@ -1,8 +1,16 @@
 #!/bin/bash
 
-if [[ $# -eq q ]]; then
-# poweroff in 2 minitues
-    ps -eo pid | grep $1 &> /dev/null || /sbin/shutdown -h +2
+if [[ $# -eq 1 ]]; then
+# poweroff in 1 minitues
+    type $1 >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "$1 is not exist!"
+        exit 1
+    fi
+    ps -eo pid | grep $1 &> /dev/null || /sbin/shutdown -h +1000
+else
+    echo -e "Useage:bash poweroff-if-done.sh [emerge]"
+    exit 1
 fi
 
 ----------------------------------------------------------------

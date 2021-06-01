@@ -7,7 +7,7 @@ if [[ $# -eq 1 ]]; then
         echo "$1 is not exist!"
         exit 1
     fi
-    ps -eo pid | grep $1 &> /dev/null || /sbin/shutdown -h +1000
+    ps -eo pid | pgrep $1 &> /dev/null || /sbin/shutdown -h +3
 else
     echo -e "Useage:bash poweroff-if-done.sh [emerge]"
     exit 1

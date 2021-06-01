@@ -7,15 +7,15 @@ else
     if [ $? -ne 0 ]; then
         echo "Not found $1,Please recheck.";exit 1
     else
-	while true;do
-	PSCOUNT=$(ps -ef|grep $1|grep -v grep)
-	if [ "PSCOUNT" != "0" ]; then
-	  echo ">>>$1 is running...<<<"
-	else 
-	  echo "$1 isn't running"
-	  /sbin/shutdown -h +3;exit 0
-	fi
+        while true;do
+        PSCOUNT=$(pgrep $1)
+        if [ ! -n "$PSCOUNT" ]; then
+          echo "$1 isn't running"
+          /sbin/shutdown -h +3;exit 0
+        else
+          echo ">>>$1 is running...<<<"
+        fi
 	sleep 5
-	done
+        done
     fi
 fi

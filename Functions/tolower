@@ -1,0 +1,3 @@
+#!/bin/sh
+#put this file in /usr/loca/bin and make chmod +x for executive
+echo $1 | tr '[:upper:]' '[:lower:]'

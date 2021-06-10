@@ -35,7 +35,9 @@ if [ $# -ne 1 ]; then
   colorEcho ${WHITE}"Useage: ./sshlogin.sh [1|2].   and 1 as bandwagon,2 as orcale"
   exit 9
 fi
-case $1 in
+case $(echo $1|tr '[:upper:]' '[:lower:]') in
+#case $1 in
+
 	1|B|b|bandwagon)
 	TARGETID=$VPSID1
 	;;

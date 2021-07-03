@@ -1,0 +1,44 @@
+{
+    order reverse_proxy before map
+    admin off
+    log { 
+	format console
+	output file /var/log/caddy/caddy.log {
+		level ERROR
+		roll_size 10mb
+		roll_keep 3
+		roll_keep_for 7d
+			}
+    }
+}
+
+
+:443, tefiszx.ga {
+    tls tefiszx@gmail.com {
+	on_demand	
+        }    
+	reverse_proxy / 127.0.0.1:5212
+	    reverse_proxy @grpc {
+		to h2c://localhost:16891
+		flush_interval -1
+		transport http {
+			versions h2c 2
+		}
+	}
+	@grpc	{
+		protocol grpc
+		path /BGlnlz158/*
+	}
+
+    route	{
+		forward_proxy	{
+		    basic_auth tefiszx BGlnlz=%$158luckYMan
+			hide_ip
+			hide_via
+		    probe_resistance cloudflare.com
+		    upstream http://127.0.0.1:8080
+			}
+    file_server {
+        root /var/www
+        }
+    }

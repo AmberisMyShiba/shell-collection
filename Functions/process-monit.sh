@@ -20,7 +20,7 @@ else
         #CHECKTIME=$((CHECKTIME+1))
         ((CHECKTIME++))
 	  if [ $CHECKTIME -ge 2 ]; then
-	    echo ">>>$1 has been running...for $CHECKTIME minutes.<<<"
+	    echo ">>>$1 has been running...for $((CHECKTIME-1)) minutes.<<<"
 	  else
 	    echo ">>>$1 is running detected.<<<"
 	  fi

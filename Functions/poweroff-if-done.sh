@@ -26,8 +26,7 @@ do
             para=""
             PSNAME=$PSNAME$para    
         fi
-        echo $PSCOUNT
-        echo $PSNAMEM
+        echo $PSCOUNT $PSNAMEM
     done
     if [ $PSCOUNT = 0 ]; then
         ENDFLAG=FALSE

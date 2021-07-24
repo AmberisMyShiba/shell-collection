@@ -1,5 +1,7 @@
 {
-    order reverse_proxy before map
+#	order webdav before file_server
+#	order reverse_proxy before map #naive will not connect success if enable this option
+	order forward_proxy before map
     admin off
     log { 
 	format console
@@ -10,14 +12,25 @@
 		roll_keep_for 7d
 			}
     }
+	servers :443 {
+			protocol {
+				allow_h2c
+				experimental_http3
+			}
+	}
 }
 
 
 :443, tefiszx.ga {
+#	tls {
+#		ciphers TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+#		alpn h2 http/1.1
+#	}
     tls tefiszx@gmail.com {
 	on_demand	
         }    
-	reverse_proxy / 127.0.0.1:5212
+
+	reverse_proxy  127.0.0.1:5212
 	    reverse_proxy @grpc {
 		to h2c://localhost:16891
 		flush_interval -1
@@ -38,7 +51,7 @@
 		    probe_resistance cloudflare.com
 		    upstream http://127.0.0.1:8080
 			}
-    file_server {
-        root /var/www
-        }
+#    file_server {
+#		root /var/www
+#        }
     }

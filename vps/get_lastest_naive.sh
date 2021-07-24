@@ -32,11 +32,12 @@ if [ ! -f "$PKG_LATEST" ]; then
 fi
 tar -xf $PKG_LATEST
 echo -e "5.stoping naiveproxy.service in SystemD."
-systemctl stop naiveproxy
+systemctl stop {naiveproxy,naive-redir} 2>/dev/null
+sleep 2
 echo -e "6.Copy latest naive bin files to $NAIVE_PATH"
 cp $PKG_DIR/naive $NAIVE_LOCAL_PATH/
 echo -e "7.restaring naiveproxy.service."
-systemctl start naiveproxy
+systemctl start {naiveproxy,naive-redir} 2>/dev/null
 colorEcho ${GREEN} "8.Cleaning Downloaded files..."
 colorEcho ${YELLOW} "Do you want to DEL(default option)dowloaded files?(y/n)"
   read mychoice leftover

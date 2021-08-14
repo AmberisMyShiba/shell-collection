@@ -1,0 +1,15 @@
+gTile default options in [Resize presets] tabs
+Preset resize 11: 2x3 0:2 0:2
+Preset resize 13: 2x3 0:1 0:1
+Preset resize 14  2x3  0:0 1:1
+Preset resize 16 2x3 1:1 1:1
+Preset resize 17: 2x3 0:0 0:0
+Preset resize 19: 2x3 1:0 1:0
+
+
+Preset resize 11: 3x2 0:1 0:1
+Preset resize 13: 3x2 2:1 2:1
+Preset resize 14: 3x2 0:0 1:1
+Preset resize 16: 3x2 2:0 2:1
+Preset resize 17: 3x2 0:0 0:0
+Preset resize 19: 3x2 2:0 2:0

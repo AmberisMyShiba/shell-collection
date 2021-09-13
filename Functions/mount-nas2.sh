@@ -25,11 +25,37 @@ COMMAND :={
 Specify the COMMADN default as blank, it will auto detect and exec mount/umount
 EOF
 }
+
+mk_mount_dir () {
+#check if mount point exist,otherwise create dir
+DIR_VIDEO="/mnt/networkshare/nas-video"
+DIR_XUNLEI="/mnt/networkshare/nas-xunlei"
+DIR_NETBACKUP="/mnt/networkshare/nas-netbackup"
+if [ ! -d $DIR_VIDEO ]; then
+  	echo "MountPoint not exist!now mkdir to " "$(color_green "$DIR_VIDEO")"
+	mkdir -p $DIR_VIDEO
+fi
+
+if [ ! -d $DIR_XUNLEI ]; then
+  echo "MountPoint not exist!now mkdir to " "$(color_green "$DIR_XUNLEI")"
+  mkdir -p $DIR_XUNLEI
+fi
+
+if [ ! -d $DIR_NETBACKUP ]; then
+  echo "MountPoint not exist!now mkdir to " "$(color_green "$DIR_NETBACKUP")"
+  mkdir -p $DIR_NETBACKUP
+fi
+
+}
+
 mountnas() {
 #echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/video /mnt/networkshare/nas-video
 #sleep 1
 #echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
 #echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+
+mk_mount_dir
+
 if mount | grep /mnt/networkshare/nas > /dev/null; then
     echo "$(font_bold "It seems like NAS sharing already mounted!")"
 else

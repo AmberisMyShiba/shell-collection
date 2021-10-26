@@ -1,5 +1,3 @@
-#!/bin/bash
-
 UNLOCK_FILE="/etc/dnsmasq.d/unlock.conf"
 DNS_NOW=$(grep "address=" $UNLOCK_FILE|awk -v FS="/" '{if(NR==2) print $3}')
 
@@ -20,17 +18,37 @@ check_ip()
    fi
 }
 
+
 main() {
-read -p "Please input the New DNS,it will replace the current one:  " DNS_NEW
-check_ip $DNS_NEW
-echo
-echo -e "\033[32m\033[01m The Current unlock DNS is: \033[0m" $DNS_NOW
-echo
-echo -e "\033[33m\033[01m The New unlock DNS will be replaced with: \033[0m" $DNS_NEW
-sed  -i "s/$DNS_NOW/$DNS_NEW/g" $UNLOCK_FILE
-sleep 1
-echo -e "\033[36m\033[01m Dnsmasq service will be restarted.\033[0m"
-systemctl restart dnsmasq
+		echo
+		echo -e "\033[32m\033[01m The Current unlock DNS is: \033[0m" $DNS_NOW
+	if [ $# -eq 0 ] ;then
+		read -p "Please input the New DNS,it will replace the current one:  " DNS_NEW
+		check_ip $DNS_NEW
+		echo
+		echo -e "\033[33m\033[01m The New unlock DNS will be replaced with: \033[0m" $DNS_NEW
+		sed  -i "s/$DNS_NOW/$DNS_NEW/g" $UNLOCK_FILE
+	elif [ $# -eq 1 ];then
+		DNS_NEW=$1
+		check_ip $DNS_NEW
+		echo -e "\033[33m\033[01m The New unlock DNS will be replaced with: \033[0m" $DNS_NEW
+		echo
+		sed -i 	"s/$DNS_NOW/$DNS_NEW/g" $UNLOCK_FILE
+	else
+		echo -e "\033[32m\033[01m Useage:$0 [DNS IP Address] \033[0m"
+		exit 1
+	fi
+	
+	echo -e "\033[36m\033[01m Dnsmasq service will be restarted.\033[0m"
+	systemctl restart dnsmasq
+	sleep 1
+	systemctl status dnsmasq >null
+	
+	if [ $? -eq 0 ];then
+		echo -e "\033[32m\033[01m Dnsmasq service restarted sucess.\033[0m"
+	else
+		echo -e "\033[33m\033[01m Dnsmasq service restarting encounted an error.\033[0m"
+	fi
 }
 
 main "$@"

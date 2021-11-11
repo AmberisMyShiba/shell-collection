@@ -42,7 +42,7 @@ main() {
 	echo -e "\033[36m\033[01m Dnsmasq service will be restarted.\033[0m"
 	systemctl restart dnsmasq
 	sleep 1
-	systemctl status dnsmasq >null
+	systemctl status dnsmasq > /dev/null
 	
 	if [ $? -eq 0 ];then
 		echo -e "\033[32m\033[01m Dnsmasq service restarted sucess.\033[0m"

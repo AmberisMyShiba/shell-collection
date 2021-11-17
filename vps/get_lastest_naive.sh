@@ -24,7 +24,7 @@ if [ -f "$PKG_LATEST" ];then
 fi
 echo -e "3.Downloading the latest version."
 #curl -s "https://api.github.com/repos/klzgrad/naiveproxy/releases/latest" |grep linux-x64 | grep browser_download_url | cut -d : -f 2,3 | tr -d \"|wget -qi -
-wget $PKG_URL -q --show-progress
+wget -q --show-progress $PKG_URL
 echo -e "4.unzip and replace naive bin file"
 if [ ! -f "$PKG_LATEST" ]; then
   colorEcho ${YELLOW} "Not found the naive release,Please Check Downloading file correct!"

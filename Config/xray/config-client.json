@@ -62,14 +62,14 @@
       "settings": {
         "vnext": [
           {
-            "address": "blurface.xyz",
+            "address": "domain.com,
             "port": 443,
             "users": [
               {
                 "alterid": 0,
                 "encryption": "none",
                 "flow": "xtls-rprx-direct",
-                "id": "a1c04f96-5573-4d86-a0f8-1c15b4d4ab34",
+                "id": "UUID",
                 "level": 8,
                 "security": "auto"
               }
@@ -81,7 +81,7 @@
         "network": "tcp",
         "security": "xtls",
         "xtlsSettings": {
-          "serverName": "www.blurface.xyz",
+          "serverName": "www.domain.com",
           "allowInsecure": false
         }
       },

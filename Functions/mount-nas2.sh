@@ -49,19 +49,19 @@ fi
 }
 
 mountnas() {
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/video /mnt/networkshare/nas-video
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/video /mnt/networkshare/nas-video
 #sleep 1
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
 
 mk_mount_dir
 
 if mount | grep /mnt/networkshare/nas > /dev/null; then
     echo "$(font_bold "It seems like NAS sharing already mounted!")"
 else
-    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/video /mnt/networkshare/nas-video
-mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+    mount -t cifs -o vers=2.0,user=tef,password=passwd,defaults //192.168.5.168/video /mnt/networkshare/nas-video
+mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
+mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
     echo "$(color_green "NAS Sharing folders is Mounted")"
 fi
 }

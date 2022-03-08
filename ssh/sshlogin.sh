@@ -8,7 +8,7 @@ BLUE="34m"
 WHITE="97m"
 BLINK="\e[5m"
 
-KEYPATH="~/Vultr/id_rsa "
+KEYPATH="~/path/to/key_rsa "
 VPSID1="root@0.1.2.3"
 VPSID2="ubuntu@1.2.3.4"
 VPSID3="root@1.2.3.4"

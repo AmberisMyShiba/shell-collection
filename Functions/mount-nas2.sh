@@ -49,10 +49,10 @@ fi
 }
 
 mountnas() {
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/video /mnt/networkshare/nas-video
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,file_mode=0777,dir_mode=0777 //192.168.5.168/video /mnt/networkshare/nas-video
 #sleep 1
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,file_mode=0777,dir_mode=0777 //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,uid=1000,gid=1000 //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
 
 mk_mount_dir
 

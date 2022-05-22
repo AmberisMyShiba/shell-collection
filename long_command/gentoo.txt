@@ -26,6 +26,7 @@ sed -i "s/dnsmasq_bind_port='53'/dnsmasq_bind_port='3553'/g" /etc/ss-tproxy/ss-t
 #cp /usr/src/linux-5.4.38-gentoo/.config /usr/src/linux/
 make olddefconfig
 make && make install && make modules_install
+make modules_prepare
 emerge -a @module-rebuild
 
 

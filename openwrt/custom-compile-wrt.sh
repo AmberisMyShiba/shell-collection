@@ -8,7 +8,7 @@
 ##1.Clone or update lede repository
 echo -e "\033[42;37m pull sources from repository \033[0m"
 OPENWRT_DIR="lede/"
-DIFF_CONFIG=x86_64.config
+DIFF_CONFIG=x86_64.diff
 if [ ! -d "$OPENWRT_DIR" ];then
 	echo -e "\033[42;37m pull sources from LEDE repository \033[0m"
 	git clone https://github.com/coolsnowwolf/lede
@@ -66,9 +66,8 @@ git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/$LUCI_
 #4. install feeds
 ./scripts/feeds update -a 
 ./scripts/feeds install -a
-DIFF_CONFIG=x86_64.config
 if [ -f ../"$DIFF_CONFIG" ]; then
-	echo -e "\033[1m Found \033[42;37mDIFF.config\033[0m,Copy to .config and apply.\033[0m"
+	echo -e "\033[1m Found \033[42;37m$DIFF_CONFIG\033[0m,Copy to .config and apply.\033[0m"
 	cp -f ../"$DIFF_CONFIG" .config
 fi
 make defconfig
@@ -83,7 +82,7 @@ case $ac in
    	n|N)
   		if [ ! -f "$DIFF_CONFIG" ];then
    			echo -e "\033[1m The file which name is\033[5m \033[42;31md$DIFF_CONFIG\033[0m \033[1mis not found! \033[0m"
-          	echo -e "\033[36m Please make menuconfig at least once and run:[$ \033[32m scripts/diffconfig.sh > x86_64.config] to creat a diff config file.\033[0m"
+          	echo -e "\033[36m Please make menuconfig at least once and run:[$ \033[32m scripts/diffconfig.sh > x86_64.diff] to creat a diff config file.\033[0m"
            	exit 1
       	else
            	echo -e "\033[1m The file which name is\033[5m \033[42;31md$DIFF_CONFIG\033[0m \033[1mis found!\033[0m"

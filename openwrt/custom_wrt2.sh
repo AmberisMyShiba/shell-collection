@@ -38,10 +38,12 @@ PKG_ARRAY=($ARGON_DIR $HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $OPENCLASH_DIR $J
     n|N)		
     	ColneRepo
     	IntstallSubRepo
+    	InstallFeeds
     	MkConfig
     	;;
     r|R)	
     	UpdateRepo
+    	InstallFeeds
     	MkConfig
     	;;
     v|V)
@@ -125,6 +127,7 @@ UpdateRepo () {
     	fi
     	git -C package/$str pull
     done
+    InstallFeeds
 }
 
 
@@ -176,7 +179,9 @@ fi
 PKG_DIR=$JDDAILY
 rm -rf package/$PKG_DIR
 git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/$PKG_DIR
+}
 
+InstallFeeds () {
 #3. install feeds
 ./scripts/feeds update -a 
 ./scripts/feeds install -a

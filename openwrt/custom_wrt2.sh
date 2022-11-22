@@ -154,8 +154,8 @@ git clone --depth=1 https://github.com/fw876/helloworld.git package/$PKG_DIR
 PKG_DIR=$VSSR_DIR
 DEPS_DIR=$VSSR_DEPS_DIR
 rm -rf package/{$PKG_DIR,$DEPS_DIR}
-git clone https://github.com/jerrykuku/lua-maxminddb.git $PKG_DIR
-git clone https://github.com/jerrykuku/luci-app-vssr.git $DEPS_DIR
+git clone https://github.com/jerrykuku/lua-maxminddb.git $DEPS_DIR
+git clone https://github.com/jerrykuku/luci-app-vssr.git $PKG_DIR
 
 #2.4 install openclash
 #PKG_DIR="luci-app-openclash/"

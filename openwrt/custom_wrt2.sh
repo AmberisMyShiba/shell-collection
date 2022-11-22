@@ -119,6 +119,10 @@ UpdateRepo () {
     git pull
     #update sub repo
     for str in ${PKG_ARRAY[@]}; do
+    	if  [ ! -d package/$str ]; then
+    		echo "Not found submodule:$str,Please add it manulelly!"
+    		exit 1
+    	fi
     	git -C package/$str pull
     done
 }

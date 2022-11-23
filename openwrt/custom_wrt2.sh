@@ -24,36 +24,35 @@ color_yellow() {
 WRT_DIR="lede/"
 DIFF_CONFIG="x86_64.diff"
 #define subRepo git pull path
-ARGON_DIR="luci-theme-argon/"
+#ARGON_DIR="luci-theme-argon/"
 HELLOWORLD_DIR="luci-app-helloworld/"
 VSSR_DIR="luci-app-vssr/"
 VSSR_DEPS_DIR="lua-maxminddb/"
 OPENCLASH_DIR="luci-app-openclash/luci-app-openclash" #notice this special
 JDDAILY_DIR="luci-app-jd-dailybonus/"
-PKG_ARRAY=($ARGON_DIR $HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $OPENCLASH_DIR $JDDAILY_DIR)
-
- 
+#PKG_ARRAY=($HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $OPENCLASH_DIR $JDDAILY_DIR) #no longer needed for $ARGON_DIR 
+PKG_ARRAY=($HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $JDDAILY_DIR) 
  main () {
- case $1 in
-    n|N)		
-    	ColneRepo
-    	IntstallSubRepo
-    	InstallFeeds
-    	MkConfig
-    	;;
-    r|R)	
-    	UpdateRepo
-    	InstallFeeds
-    	MkConfig
-    	;;
-    v|V)
-    	vershow;;
-    h|H)
-    	helpmsg;;
-     *)
-     #echo "$(color_yellow "Unknown option: $arg")"; vershow;helpmsg; return 1
-     ;;
-esac
+	case $1 in
+	    n|N)		
+    		ColneRepo
+    		IntstallSubRepo
+    		InstallFeeds
+    		MkConfig
+    		;;
+    	r|R)	
+    		UpdateRepo
+    		InstallFeeds
+    		MkConfig
+    		;;
+    	v|V)
+    		vershow;;
+    	h|H)
+    		helpmsg;;
+    	 *)
+    	 echo "$(color_yellow "Unknown option: $arg")"; vershow;helpmsg; return 1
+    	 ;;
+	esac
 return 0
 }
 
@@ -69,18 +68,18 @@ EOF
 }
 
 vershow () {
-	echo  "$(font_bold $(color_green 'This script helps compiling custome openwrt firm')) $*"
+	echo  "$(font_bold $(color_green 'This script helps compiling custom openwrt firm')) $*"
 }
 
 ColneRepo ()  {
 ##1.Clone or update lede repository
-echo -e "\033[42;37m pull sources from repository \033[0m"
+echo -e "\033[31m It is proceeding the clone process \033[0m"
 if [ ! -d "$WRT_DIR" ];then
 	echo -e "\033[42;37m pull sources from LEDE repository \033[0m"
 	git clone https://github.com/coolsnowwolf/lede
 	cd lede
 else
-	echo -e "\033[42;37m Found LEDE Repository in current DIR\033[0m"
+	echo -e "\033[40;5m Found LEDE Repository in current path\033[0m"
 fi	
 default="y"
 read -e -p "The repo DIR  will be removed and clone remote ?(y/n)" ac
@@ -91,43 +90,46 @@ case $ac in
 		rm -rf $WRT_DIR
 		echo -e "\033[42;37m The old repo has been removed!!\033[0m"
 		git clone https://github.com/coolsnowwolf/lede
+		#debug point
+		echo -e "\033[31m $WRT_DIR \033[0m"
 		cd $WRT_DIR
 		;;
 	n|N)
-		echo -e "\033[36m Please check the repo dir:[$ \033[32m $OPEWRT_DIR] to rebuild wrt.\033[0m"
+		echo -e "\033[36m Please check the repo dir:[\033[31m $WRT_DIR \033[36m]to rebuild wrt.\033[0m"
       	exit 1
    		;;
 	*)
-		echo -e "\033[36m Please Input correct char (y/n):[$ \033[32m $OPEWRT_DIR] to rebuild wrt.\033[0m"
+		echo -e "\033[36m Please Input correct char (y/n):[\033[312 $WRT_DIR \033[36m] to rebuild wrt.\033[0m"
 		;;
 esac
 }
 
 UpdateRepo () {
+	echo -e "\033[31m It is proceeding the pull process \033[0m"
 	CUR_DIR=$(pwd|awk -F/ '{print $NF}')
 	if  [ $CUR_DIR = $WRT_DIR ]; then
 		echo "start updating remote repo"
 	else
+		echo -e "\033[33m swith path to ~/openwrt/$WRT_DIR \033[0m"
 		cd ~/openwrt/$WRT_DIR
 	fi
-	echo -e "\033[40;5m Cleaning Compile cache\033[0m"
-	./scripts/feeds uninstall -a
-	rm -rf ./feeds
-	make distclean
-    sleep 2
+	echo -e "\033[40;5m Cleaning Compile cache(feeds clean && make distclean \033[0m"
+	#rm -rf ./feeds #same as feeds clean
+    ./scripts/feeds clean
+    make distclean
     echo -e "\033[42;37m Starting pull remote for syncing \033[0m"
-     #update main repo
-    git reset --hard
+    #update main repo
+    #git reset --hard
     git pull
     #update sub repo
     for str in ${PKG_ARRAY[@]}; do
     	if  [ ! -d package/$str ]; then
-    		echo "Not found submodule:$str,Please add it manulelly!"
+    		echo -e "\033[42;30m Not found submodule:$str,Please add it in [package/$str] manually! \033[0m"
     		exit 1
     	fi
+    	echo -e "\033[33m updating $str repo \033[0m"
     	git -C package/$str pull
     done
-    InstallFeeds
 }
 
 
@@ -136,59 +138,65 @@ IntstallSubRepo () {
 ##2.install extra luci software
 ##2.1	argon-theme			/jerrykuku/luci-theme-argon/tree/18.06
 ##2.2	hello-world			/fw876/helloworld
-##2.3	vssr							/jerrykuku/luci-app-vssr
-##2.4	opencalsh				/vernesong/OpenClash
+##2.3	vssr				/jerrykuku/luci-app-vssr
+##2.4	opencalsh			/vernesong/OpenClash
 ##2.5	jd-dailybonus		/jerrykuku/node-request.git  #git node-request 依赖
-##											/jerrykuku/luci-app-jd-dailybonus.git
+##							/jerrykuku/luci-app-jd-dailybonus.git
 #2.1 install argon-theme
-PKG_DIR=$ARGON_DIR
-rm -rf package/$PKG_DIR
-git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/$PKG_DIR
+#PKG_DIR=$ARGON_DIR
+#rm -rf package/$PKG_DIR
+#git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git package/$PKG_DIR
 
+echo -e "\033[31m It is proceeding the submodules installations \033[0m"
 #2.2 install helloworld
 PKG_DIR=$HELLOWORLD_DIR
+echo -e "\033[32m 1.reinstalling $PKG_DIR \033[0m"
 rm -rf package/$PKG_DIR
 git clone --depth=1 https://github.com/fw876/helloworld.git package/$PKG_DIR
 
 #2.3 install vssr
 PKG_DIR=$VSSR_DIR
 DEPS_DIR=$VSSR_DEPS_DIR
+echo -e "\033[32m 2.reinstalling $PKG_DIR \033[0m"
 rm -rf package/{$PKG_DIR,$DEPS_DIR}
-git clone https://github.com/jerrykuku/lua-maxminddb.git $DEPS_DIR
-git clone https://github.com/jerrykuku/luci-app-vssr.git $PKG_DIR
+git clone https://github.com/jerrykuku/lua-maxminddb.git package/$DEPS_DIR
+git clone https://github.com/jerrykuku/luci-app-vssr.git package/$PKG_DIR
 
-#2.4 install openclash
-#PKG_DIR="luci-app-openclash/"
-PKG_DIR=$(echo $OPENCLASH_DIR|cut -d '/' -f2)
-rm -rf package/$PKG_DIR
-mkdir -p package/$PKG_DIR
-git -C package/$PKG_DIR init
-git -C package/$PKG_DIR remote add -f origin https://github.com/vernesong/OpenClash.git
-git -C package/$PKG_DIR config core.sparsecheckout true
-echo "luci-app-openclash" >> package/$PKG_DIR/.git/info/sparse-checkout
-git -C package/$PKG_DIR pull --depth 1 origin master
-git -C package/$PKG_DIR branch --set-upstream-to=origin/master master
-# 编译 po2lmo (如果有po2lmo可跳过)
-if [ ! -f "/usr/bin/po2lmo" ]; then
-	pushd package/$PKG_DIR/luci-app-openclash/tools/po2lmo
-	make && sudo make install
-	popd
-fi
+##2.4 install openclash
+##PKG_DIR="luci-app-openclash/"
+#PKG_DIR=$(echo $OPENCLASH_DIR|cut -d '/' -f2)
+#echo -e "\033[32m 3.reinstalling $PKG_DIR \033[0m"
+#rm -rf package/$PKG_DIR
+#mkdir -p package/$PKG_DIR
+#git -C package/$PKG_DIR init
+#git -C package/$PKG_DIR remote add -f origin https://github.com/vernesong/OpenClash.git
+#git -C package/$PKG_DIR config core.sparsecheckout true
+#echo "luci-app-openclash" >> package/$PKG_DIR/.git/info/sparse-checkout
+3git -C package/$PKG_DIR pull --depth 1 origin master
+#git -C package/$PKG_DIR branch --set-upstream-to=origin/master master
+## 编译 po2lmo (如果有po2lmo可跳过)
+#if [ ! -f "/usr/bin/po2lmo" ]; then
+#	pushd package/$PKG_DIR/luci-app-openclash/tools/po2lmo
+#	make && sudo make install
+#	popd
+#fi
 
 #2.5 install luci-app-jd-dailybonus
-PKG_DIR=$JDDAILY
+PKG_DIR=$JDDAILY_DIR
 rm -rf package/$PKG_DIR
+echo -e "\033[32m 4.reinstalling $PKG_DIR \033[0m"
 git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/$PKG_DIR
 }
 
 InstallFeeds () {
 #3. install feeds
-./scripts/feeds update -a 
+echo -e "\033[31m It is proceeding feeds(update && install all) \033[0m"
+./scripts/feeds update -a
 ./scripts/feeds install -a
 }
 
-
 MkConfig () {
+echo -e "\033[31m It is proceeding the preparation of compiling \033[0m"
 if [ -f ../"$DIFF_CONFIG" ]; then
 	echo -e "\033[1m Found \033[42;37mDIFF.config\033[0m,Copy to .config and apply.\033[0m"
 	cp -f ../"$DIFF_CONFIG" .config
@@ -202,9 +210,9 @@ case $ac in
 	y|Y)
    		make menuconfig;;
    	n|N)
-  		if [ ! -f "$DIFF_CONFIG" ];then
+  		if [ ! -f "../$DIFF_CONFIG" ];then
    			echo -e "\033[1m The file which name is\033[5m \033[42;31md$DIFF_CONFIG\033[0m \033[1mis not found! \033[0m"
-          	echo -e "\033[36m Please make menuconfig at least once and run:[$ \033[32m scripts/diffconfig.sh > x86_64.diff] to creat a diff config file.\033[0m"
+          	echo -e "\033[36m Please make menuconfig at least once and run:[\033[32m scripts/diffconfig.sh > x86_64.diff] to creat a diff config file.\033[0m"
            	exit 1
       	else
            	echo -e "\033[1m The file which name is\033[5m \033[42;31md$DIFF_CONFIG\033[0m \033[1mis found!\033[0m"

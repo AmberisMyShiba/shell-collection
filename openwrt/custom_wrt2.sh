@@ -30,9 +30,8 @@ VSSR_DIR="luci-app-vssr/"
 VSSR_DEPS_DIR="lua-maxminddb/"
 OPENCLASH_DIR="luci-app-openclash/luci-app-openclash" #notice this special
 JDDAILY_DIR="luci-app-jd-dailybonus/"
-#PKG_ARRAY=($HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $OPENCLASH_DIR $JDDAILY_DIR) #no longer needed for $ARGON_DIR 
-PKG_ARRAY=($HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $JDDAILY_DIR) 
- main () {
+PKG_ARRAY=($HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $OPENCLASH_DIR $JDDAILY_DIR) #no longer needed for $ARGON_DIR 
+main () {
 	case $1 in
 	    n|N)		
     		ColneRepo

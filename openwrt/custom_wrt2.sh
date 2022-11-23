@@ -163,22 +163,22 @@ git clone https://github.com/jerrykuku/luci-app-vssr.git package/$PKG_DIR
 
 ##2.4 install openclash
 ##PKG_DIR="luci-app-openclash/"
-#PKG_DIR=$(echo $OPENCLASH_DIR|cut -d '/' -f2)
-#echo -e "\033[32m 3.reinstalling $PKG_DIR \033[0m"
-#rm -rf package/$PKG_DIR
-#mkdir -p package/$PKG_DIR
-#git -C package/$PKG_DIR init
-#git -C package/$PKG_DIR remote add -f origin https://github.com/vernesong/OpenClash.git
-#git -C package/$PKG_DIR config core.sparsecheckout true
-#echo "luci-app-openclash" >> package/$PKG_DIR/.git/info/sparse-checkout
-3git -C package/$PKG_DIR pull --depth 1 origin master
-#git -C package/$PKG_DIR branch --set-upstream-to=origin/master master
-## 编译 po2lmo (如果有po2lmo可跳过)
-#if [ ! -f "/usr/bin/po2lmo" ]; then
-#	pushd package/$PKG_DIR/luci-app-openclash/tools/po2lmo
-#	make && sudo make install
-#	popd
-#fi
+PKG_DIR=$(echo $OPENCLASH_DIR|cut -d '/' -f2)
+echo -e "\033[32m 3.reinstalling $PKG_DIR \033[0m"
+rm -rf package/$PKG_DIR
+mkdir -p package/$PKG_DIR
+git -C package/$PKG_DIR init
+git -C package/$PKG_DIR remote add -f origin https://github.com/vernesong/OpenClash.git
+git -C package/$PKG_DIR config core.sparsecheckout true
+echo "luci-app-openclash" >> package/$PKG_DIR/.git/info/sparse-checkout
+git -C package/$PKG_DIR pull --depth 1 origin master
+git -C package/$PKG_DIR branch --set-upstream-to=origin/master master
+# 编译 po2lmo (如果有po2lmo可跳过)
+if [ ! -f "/usr/bin/po2lmo" ]; then
+	pushd package/$PKG_DIR/luci-app-openclash/tools/po2lmo
+	make && sudo make install
+	popd
+fi
 
 #2.5 install luci-app-jd-dailybonus
 PKG_DIR=$JDDAILY_DIR

@@ -31,6 +31,7 @@ VSSR_DEPS_DIR="lua-maxminddb/"
 OPENCLASH_DIR="luci-app-openclash/luci-app-openclash" #notice this special
 JDDAILY_DIR="luci-app-jd-dailybonus/"
 PKG_ARRAY=($HELLOWORLD_DIR $VSSR_DIR $VSSR_DEPS_DIR $OPENCLASH_DIR $JDDAILY_DIR) #no longer needed for $ARGON_DIR 
+
 main () {
 	case $1 in
 	    n|N)		
@@ -81,6 +82,7 @@ else
 	git status -s > /dev/null 2>&1
 	if [  $? -ne 0 ];then
 		echo -e "\033[32m The $WRT_DIR directory isn't a git Repo \033[0m"
+		cd ..
 		exit 128
 	fi
 fi
@@ -105,7 +107,7 @@ else
 			echo -e "\033[42;37m The old repo has been removed!!\033[0m"
 			git clone https://github.com/coolsnowwolf/lede
 			#debug point
-			echo -e "\033[31m $WRT_DIR \033[0m"
+			#echo -e "\033[31m $WRT_DIR \033[0m"
 			cd $WRT_DIR
 			;;
 		n|N)
@@ -246,10 +248,13 @@ ac="${ac:-${default}}"
 case $ac in
 	y|Y)
 		time make download -j$(($(nproc)+1))
-		make -j$(($(nproc)+1)) || make -j1 V=sc 2>&1 | tee build.log #| grep -F -i '[^_-"a-z]error[^_-.a-z]' -or- grep -i -E "^make.*(error|[12345]...Entering dir)"
+		make -j$(($(nproc)+1)) || make -j1 V=sc 2>&1 | tee build.log | grep -i -E "^make.*(error|[12345]...Entering dir)"
+		##| grep -F -i '[^_-"a-z]error[^_-.a-z]' -or-
         if [  $? = 0 ];then
 			echo -e "\033[32m Export the diff config file to '../$DIFF_CONFIG' \033[0m"
 			./scripts/diffconfig.sh > ../$DIFF_CONFIG
+		else
+			grep -F -i '[^_-"a-z]error[^_-.a-z]' build.log
 		fi
         ;;
 	*)

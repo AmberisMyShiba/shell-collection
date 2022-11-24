@@ -90,33 +90,33 @@ ColneRepo ()  {
 ##1.Clone or update lede repository
 echo -e "\033[31m It is proceeding the clone process \033[0m"
 if [ ! -d "$WRT_DIR" ];then
-	echo -e "\033[42;37m pull sources from LEDE repository \033[0m"
+	echo -e "\033[42;37m pull sources from LEDE repository in current path: $(pwd) \033[0m"
 	git clone https://github.com/coolsnowwolf/lede
-	cd lede
+	cd $WRT_DIR
 else
 	echo -e "\033[40;5m Found LEDE Repository in current path\033[0m"
-fi	
-default="y"
-read -e -p "The repo DIR  will be removed and clone remote ?(y/n)" ac
-ac="${ac:-${default}}"
-#echo $ac
-case $ac in
-	y|Y)
-		rm -rf $WRT_DIR
-		echo -e "\033[42;37m The old repo has been removed!!\033[0m"
-		git clone https://github.com/coolsnowwolf/lede
-		#debug point
-		echo -e "\033[31m $WRT_DIR \033[0m"
-		cd $WRT_DIR
-		;;
-	n|N)
-		echo -e "\033[36m Please check the repo dir:[\033[31m $WRT_DIR \033[36m]to rebuild wrt.\033[0m"
-      	exit 1
-   		;;
-	*)
-		echo -e "\033[36m Please Input correct char (y/n):[\033[312 $WRT_DIR \033[36m] to rebuild wrt.\033[0m"
-		;;
-esac
+	default="y"
+	read -e -p "The repo DIR  will be removed and clone remote ?(y/n)" ac
+	ac="${ac:-${default}}"
+	#echo $ac
+	case $ac in
+		y|Y)
+			rm -rf $WRT_DIR
+			echo -e "\033[42;37m The old repo has been removed!!\033[0m"
+			git clone https://github.com/coolsnowwolf/lede
+			#debug point
+			echo -e "\033[31m $WRT_DIR \033[0m"
+			cd $WRT_DIR
+			;;
+		n|N)
+			echo -e "\033[36m Please check out the repo dir:[\033[31m $WRT_DIR \033[36m]to rebuild wrt.\033[0m"
+			exit 1
+			;;
+		*)
+			echo -e "\033[36m Please Input correct char (y/n):[\033[312 $WRT_DIR \033[36m] to rebuild wrt.\033[0m"
+			;;
+	esac
+fi
 }
 
 UpdateRepo () {
@@ -165,14 +165,14 @@ IntstallSubRepo () {
 echo -e "\033[31m It is proceeding the submodules installations \033[0m"
 #2.2 install helloworld
 PKG_DIR=$HELLOWORLD_DIR
-echo -e "\033[32m 1.reinstalling $PKG_DIR \033[0m"
+echo -e "\033[32m 1.installing $PKG_DIR \033[0m"
 rm -rf package/$PKG_DIR
 git clone --depth=1 https://github.com/fw876/helloworld.git package/$PKG_DIR
 
 #2.3 install vssr
 PKG_DIR=$VSSR_DIR
 DEPS_DIR=$VSSR_DEPS_DIR
-echo -e "\033[32m 2.reinstalling $PKG_DIR \033[0m"
+echo -e "\033[32m 2.installing $PKG_DIR \033[0m"
 rm -rf package/{$PKG_DIR,$DEPS_DIR}
 git clone https://github.com/jerrykuku/lua-maxminddb.git package/$DEPS_DIR
 git clone https://github.com/jerrykuku/luci-app-vssr.git package/$PKG_DIR
@@ -180,7 +180,7 @@ git clone https://github.com/jerrykuku/luci-app-vssr.git package/$PKG_DIR
 ##2.4 install openclash
 ##PKG_DIR="luci-app-openclash/"
 PKG_DIR=$(echo $OPENCLASH_DIR|cut -d '/' -f2)
-echo -e "\033[32m 3.reinstalling $PKG_DIR \033[0m"
+echo -e "\033[32m 3.installing $PKG_DIR \033[0m"
 rm -rf package/$PKG_DIR
 mkdir -p package/$PKG_DIR
 git -C package/$PKG_DIR init
@@ -199,7 +199,7 @@ fi
 #2.5 install luci-app-jd-dailybonus
 PKG_DIR=$JDDAILY_DIR
 rm -rf package/$PKG_DIR
-echo -e "\033[32m 4.reinstalling $PKG_DIR \033[0m"
+echo -e "\033[32m 4.installing $PKG_DIR \033[0m"
 git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/$PKG_DIR
 }
 
@@ -246,7 +246,11 @@ ac="${ac:-${default}}"
 case $ac in
 	y|Y)
 		time make download -j$(($(nproc)+1))
-		make -j$(($(nproc)+1)) || make -j1 V=sc 2>&1 | tee build.log #| fgrep -i '[^_-"a-z]error[^_-.a-z]'
+		make -j$(($(nproc)+1)) || make -j1 V=sc 2>&1 | tee build.log #| grep -F -i '[^_-"a-z]error[^_-.a-z]' -or- grep -i -E "^make.*(error|[12345]...Entering dir)"
+        if [  $? = 0 ];then
+			echo -e "\033[32m Export the diff config file to '../$DIFF_CONFIG' \033[0m"
+			./scripts/diffconfig.sh > ../$DIFF_CONFIG
+		fi
         ;;
 	*)
         exit 0

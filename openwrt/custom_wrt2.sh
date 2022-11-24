@@ -40,6 +40,7 @@ main () {
     		MkConfig
     		;;
     	r|R)	
+    		CheckReop
     		UpdateRepo
     		InstallFeeds
     		MkConfig
@@ -68,6 +69,21 @@ EOF
 
 vershow () {
 	echo  "$(font_bold $(color_green 'This script helps compiling custom openwrt firm')) $*"
+}
+
+CheckReop () {
+#check if LEDE repo existence
+if [ ! -d "$WRT_DIR" ];then
+	echo -e "\033[31m Not found LEDE git Reop in current path.Please try n COMMAND.\033[0m"
+	exit 1
+else
+	cd "$WRT_DIR"
+	git status -s > /dev/null 2>&1
+	if [  $? -ne 0 ];then
+		echo -e "\033[32m The $WRT_DIR directory isn't a git Repo \033[0m"
+		exit 128
+	fi
+fi
 }
 
 ColneRepo ()  {

@@ -46,6 +46,10 @@ main () {
     		InstallFeeds
     		MkConfig
     		;;
+		s|S)
+			CheckReop
+			IntstallSubRepo
+			;;
     	v|V)
     		vershow;;
     	h|H)
@@ -63,6 +67,7 @@ cat << 'EOF'
 COMMAND :=
     n|compile wrt from scratch. Clone repo, Install submodules, Update and Install feeds.
     r|update source and recompile.Git pull repo and update upstream of submodules, Clean make, Recompile wrt
+    s|Submodules software install.
     h|help message
 
 EOF
@@ -123,7 +128,7 @@ fi
 
 UpdateRepo () {
 	echo -e "\033[31m It is proceeding the pull process \033[0m"
-	CUR_DIR=$(pwd|awk -F/ '{print $NF}')
+	CUR_DIR=$(pwd|awk -F/ '{print $NF}')/
 	if  [ $CUR_DIR = $WRT_DIR ]; then
 		echo "start updating remote repo"
 	else
@@ -137,14 +142,16 @@ UpdateRepo () {
     echo -e "\033[42;37m Starting pull remote for syncing \033[0m"
     #update main repo
     #git reset --hard
+    echo -e "\033[33m updating $WRT_DIR main repo \033[0m"
     git pull
     #update sub repo
     for str in ${PKG_ARRAY[@]}; do
-    	if  [ ! -d package/$str ]; then
+    	if  [ ! '-d package/$str' ]; then
+			#echo -e "s\033[33m 'str=$str' \033[0m"
     		echo -e "\033[42;30m Not found submodule:$str,Please add it in [package/$str] manually! \033[0m"
     		exit 1
     	fi
-    	echo -e "\033[33m updating $str repo \033[0m"
+    	echo -e "\033[33m updating $str subrepo \033[0m"
     	git -C package/$str pull
     done
 }

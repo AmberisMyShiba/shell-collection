@@ -239,13 +239,12 @@ case $ac in
           	echo -e "\033[36m Please make menuconfig at least once and run:[\033[32m scripts/diffconfig.sh > x86_64.diff] to creat a diff config file.\033[0m"
            	exit 1
       	else
-           	echo -e "\033[1m The file which name is\033[5m \033[42;31md$DIFF_CONFIG\033[0m \033[1mis found!\033[0m"
+           	echo -e "\033[1m The file which name is\033[5m \033[42;31md$DIFF_CONFIG\033[0m \033[1m is found!\033[0m"
            	echo -e "\033[1m It will be the default .config file as compiling[0m \033[1mis not found! \033[0m"
            	make menuconfig
       	fi
 		;;
    	*)
-#   exit 0
 esac
 echo -e "Downloading feeds and sources"
 default="Y"

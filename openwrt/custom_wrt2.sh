@@ -259,6 +259,7 @@ case $ac in
         if [  $? = 0 ];then
 			echo -e "\033[32m Export the diff config file to '../$DIFF_CONFIG' \033[0m"
 			./scripts/diffconfig.sh > ../$DIFF_CONFIG
+			echo "openwrt building accomplished! $(date)" > ../build_status.log
 		else
 			grep -F -i '[^_-"a-z]error[^_-.a-z]' build.log
 		fi

@@ -18,9 +18,9 @@ PROXY_PROCESS_NAME=$(grep startcmd /etc/ss-tproxy/ss-tproxy.conf|cut -d '(' -f 2
 CAP_ATTR=$(getcap $PROXY_PROCESS_NAME|cut -d' ' -f 2)
 BE_CAPPED='cap_net_bind_service,cap_net_admin=ep'
 colorEcho ${GREEN} "Proxy process name is:$PROXY_PROCESS_NAME"
-colorEcho ${YELLOW} "Proxy process cap is:$CAP_ATTR"
+colorEcho ${YELLOW} "Proxy process cap is setted to:$CAP_ATTR"
 if [ $CAP_ATTR != $BE_CAPPED ]; then
-    colorEcho ${RED} "Proxy process cap is incorrect !!,it will be set to fine! 
+    colorEcho ${RED} "Proxy process cap is incorrect !!,it will be setted to fine!"
         setcap cap_net_bind_service,cap_net_admin=ep $PROXY_PROCESS_NAME
 else
         colorEcho ${GREEN} "Proxy process cap is correct!"

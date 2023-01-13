@@ -19,7 +19,7 @@ CAP_ATTR=$(getcap $PROXY_PROCESS_NAME|cut -d' ' -f 2)
 BE_CAPPED='cap_net_bind_service,cap_net_admin=ep'
 colorEcho ${GREEN} "Proxy process name is:$PROXY_PROCESS_NAME"
 colorEcho ${YELLOW} "Proxy process cap is setted to:$CAP_ATTR"
-if [ $CAP_ATTR != $BE_CAPPED ]; then
+if [ "$CAP_ATTR" != "$BE_CAPPED" ]; then
     colorEcho ${RED} "Proxy process cap is incorrect !!,it will be setted to fine!"
         setcap cap_net_bind_service,cap_net_admin=ep $PROXY_PROCESS_NAME
 else

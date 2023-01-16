@@ -21,7 +21,6 @@ colorEcho ${GREEN} "Proxy process name is:$PROXY_PROCESS_NAME"
 colorEcho ${YELLOW} "Proxy process cap is:$CAP_ATTR"
 if [ "$CAP_ATTR" != "$BE_CAPPED" ]; then
         colorEcho ${GREEN} "Proxy process cap is incorrect !!,its caps just be setted to fine!"
-        colorEcho ${RED} "Please restart ss-tproxy to apply!"
         setcap cap_net_bind_service,cap_net_admin+ep $PROXY_PROCESS_NAME
 else
         colorEcho ${GREEN} "Proxy process cap is correct!"

@@ -11,17 +11,18 @@ colorEcho(){
 }
 
 # Make sure only root can run our script
-[ `whoami` != "root" ] && colorEcho ${RED} "This script must be run as root."  && exit 1
+#[ `whoami` != "root" ] && colorEcho ${RED} "This script must be run as root."  && exit 1
 
 
 PROXY_PROCESS_NAME=$(grep startcmd /etc/ss-tproxy/ss-tproxy.conf|cut -d '(' -f 2|cut -d ' ' -f 1)
 CAP_ATTR=$(getcap $PROXY_PROCESS_NAME|cut -d' ' -f 2)
 BE_CAPPED='cap_net_bind_service,cap_net_admin=ep'
 colorEcho ${GREEN} "Proxy process name is:$PROXY_PROCESS_NAME"
-colorEcho ${YELLOW} "Proxy process cap is setted to:$CAP_ATTR"
+colorEcho ${YELLOW} "Proxy process cap is:$CAP_ATTR"
 if [ "$CAP_ATTR" != "$BE_CAPPED" ]; then
-    colorEcho ${RED} "Proxy process cap is incorrect !!,it will be setted to fine!"
-        setcap cap_net_bind_service,cap_net_admin=ep $PROXY_PROCESS_NAME
+        colorEcho ${GREEN} "Proxy process cap is incorrect !!,its caps just be setted to fine!"
+        colorEcho ${RED} "Please restart ss-tproxy to apply!"
+        setcap cap_net_bind_service,cap_net_admin+ep $PROXY_PROCESS_NAME
 else
         colorEcho ${GREEN} "Proxy process cap is correct!"
 fi

@@ -40,9 +40,19 @@ tar -xvf `echo $PKG_LATEST|cut -d . -f 1-5`
 #tar -xvf `echo $PKG_LATEST|sed s/\.xz\//g`
 colorEcho ${YELLOW} "5.Please asure naive has been stopped!"
 #echo -e "Or you should run:#ps -w|grep naive and kill -9 PID"
+#kill -9 `pgrep naive` >/dev/null 2>&1
 
-kill -9 `pgrep naive` >/dev/null 2>&1
-#systemctl stop naiveproxy
+## terminate naive thread start
+NAIVE_PID=$(ps -ef|grep naive|grep -v grep|grep -v $0|awk '{print $2}')
+echo 'NAIVE_PID='$NAIVE_PID
+echo '$The running shell script's name is='$0
+if [[ ! -n $NAIVE_PID ]]; then 
+        echo 'thread is not exist'
+ else
+        echo 'thread PID='$NAIVE_PID
+        kill -9 $NAIVE_PID
+fi
+## terminate naive thread end
 
 sleep 2
 #echo -e $PKG_DIR 

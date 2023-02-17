@@ -61,10 +61,9 @@ sleep 2
 colorEcho ${GREEN} "6.Copy latest naive bin files to $NAIVE_PATH"
 cp -f $PKG_DIR/naive $NAIVE_LOCAL_PATH/
 echo -e "7.Tring restaring naiveproxy.service.May be you should restart it by manual"
-#systemctl start naiveproxy
-###default="n"  
-###read -e -p "Do you want to DEL dowloaded files?" mychoice
-###mychoice="${ac:-${default}}" 
+default="n"  
+read -e -p "Do you want to DEL dowloaded files?" mychoice
+mychoice="${ac:-${default}}" 
 colorEcho ${GREEN} "8.Cleaning Downloaded files..."
 colorEcho ${YELLOW} "Do you want to DEL(default option)dowloaded files?(y/n)"
   read mychoice leftover
@@ -81,5 +80,3 @@ colorEcho ${YELLOW} "Do you want to DEL(default option)dowloaded files?(y/n)"
 	;;
     esac
 colorEcho ${GREEN} "9.naive has been updated to the latest version!"
-
-

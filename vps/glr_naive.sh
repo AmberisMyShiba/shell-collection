@@ -33,15 +33,26 @@ if [ ! -f "$PKG_LATEST" ]; then
 fi
 tar -xf $PKG_LATEST
 echo -e "5.stoping naiveproxy.service in SystemD."
-systemctl stop {naiveproxy,naive-redir,naive} >/dev/null 2>&1 || sudo kill $(pidof naive ) >/dev/null 2>&1
-sudo ss-tproxy stop
-sleep 2
+#systemctl stop {naiveproxy,naive-redir,naive} >/dev/null 2>&1 || sudo kill $(pidof naive ) >/dev/null 2>&1
+#sudo ss-tproxy stop
+#sleep 2
+## terminate naive thread start
+NAIVE_PID=$(ps -ef|grep naive|grep -v grep|grep -v $0|awk '{print $2}')
+echo 'NAIVE_PID='$NAIVE_PID
+echo '$0='$0
+if [[ ! -n $NAIVE_PID ]]; then 
+        echo 'thread is not exist'
+ else
+        echo 'thread PID='$NAIVE_PID
+                kill -9 $NAIVE_PID
+fi
+## terminate naive thread end
 echo -e "6.Copy latest naive bin files to $NAIVE_PATH"
 cp $PKG_DIR/$BIN_FILE $BIN_LOCAL_PATH/
 setcap cap_net_bind_service,cap_net_admin+ep $BIN_LOCAL_PATH/$BIN_FILE
 echo -e "7.restaring naiveproxy.service."
 #systemctl start {naiveproxy,naive-redir,naive} 2>/dev/null
-sudo ss-tproxy start
+#sudo ss-tproxy start
 colorEcho ${GREEN} "8.Cleaning Downloaded files..."
 colorEcho ${YELLOW} "Do you want to DEL(default option)dowloaded files?(y/n)"
   read mychoice leftover
@@ -53,6 +64,5 @@ colorEcho ${YELLOW} "Do you want to DEL(default option)dowloaded files?(y/n)"
         colorEcho ${GREEN} "Files will be Saved.";;
         *)
         colorEcho ${GREEN} "Files will be Saved as default!";;
-#        rm -rf $PKG_DIR && rm -rf $PKG_LATEST;;
     esac
 colorEcho ${GREEN} "9.naive has been updated to the latest version!"

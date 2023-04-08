@@ -4,7 +4,7 @@
 
 # Check for arguments
 if [[ $# -lt 2 ]]; then
-    echo "Usage: ./sync_server_files.sh [OPTION] [SERVER_IP] [FILE_LIST] [DEST]"
+    echo "Usage: ./sync_server_files.sh [OPTION:-d|-u] -h [SERVER_IP] -f [FILE_LIST] -p [DEST]"
     exit 1
 fi
 
@@ -20,16 +20,29 @@ while [[ $# -gt 0 ]]; do
             UPLOAD=true
             shift
             ;;
+        -h|--host)
+            SERVER_IP="$2"
+            shift
+            shift
+            ;;
+        -f|--file)
+            if [[ $UPLOAD == true ]]; then
+                echo "Error: -f or --file can not be used with -u or --upload."
+                echo "Error: please remove the -f parameter to upload."
+                echo "Info: Please use with -p [DEST] to specify the file path to be uploaded."
+                exit 1
+            fi
+            FILE_LIST="$2"
+            shift
+            shift
+            ;;
         -p|--path)
             DEST="$2"
             shift
             shift
             ;;
         *)
-            if [[ -z $SERVER_IP ]]; then
-                SERVER_IP=$key
-                shift
-            elif [[ -z $FILE_LIST ]]; then
+            if [[ -z $FILE_LIST ]]; then
                 FILE_LIST=$key
                 shift
             else
@@ -45,6 +58,20 @@ if [[ -z $DOWNLOAD && -z $UPLOAD ]]; then
     exit 1
 fi
 
+# Check for download or upload flag
+if [[ $DOWNLOAD == true && $UPLOAD == true ]]; then
+    echo "Error: Cannot specify both download and upload."
+    exit 1
+fi
+
+# Check for upload flag,prohibit -f parameter
+if [[ -z $DOWNLOAD && $UPLOAD==ture ]]; then
+    if [[ -n $FILE_LIST ]]; then
+        echo "Error: -f or --file option cannot be used with -u or --upload option."
+        exit 1
+    fi
+fi
+
 # Check for server IP
 if [[ -z $SERVER_IP ]]; then
     echo "Please provide the server IP address."
@@ -52,19 +79,20 @@ if [[ -z $SERVER_IP ]]; then
 fi
 
 # Check for file list
-if [[ -z $FILE_LIST ]]; then
-    echo "Please provide the file list path."
-    exit 1
+if [[ $DOWNLOAD==true ]]; then
+   if [[ -n $FILE_LIST ]]; then
+     echo "Please provide the file list path."
+     exit 1
+   fi
 fi
 
 # Check for destination folder
 if [[ -z $DEST ]]; then
-    DEST="./"
+    DEST=$(pwd)
 fi
 
-# Create destination folder if it doesn't exist
 if [[ ! -d $DEST ]]; then
-    mkdir -p $DEST
+    mkdir $DEST
 fi
 
 # Download files
@@ -97,21 +125,21 @@ fi
         echo "Download complete."
 
     # Upload files
-    need to modify
     elif [[ ! -z $UPLOAD ]]; then
         echo "Uploading files to the remote server..."
-
-        # Read file list
-        while read file_path; do
-            if [[ "${file_path:-1}" == "*" ]]; then
-                # Remove "*" from line
-                file_path=${file_path%?}
-                # Copy directory recursively
-                    scp -r $DEST$file_path root@$SERVER_IP:$file_path
+        for dir in $DEST/*; do
+          # Check if subdirectory is a directory
+          dir_remote=$(basename $dir)
+            if [[ -d $dir ]]; then
+              #Get subdirectory name
+              # Copy directory recursively
+                #echo "debug:scp -r $dir root@$SERVER_IP:/$dir_remote"
+                scp -r $dir root@$SERVER_IP:/$dir_remote
             else
-                # Copy single file
-                    scp $DEST$file_path root@$SERVER_IP:$file_path
+              # Copy single file
+              #echo "debug: scp $dir_remote root@$SERVER_IP:root/$dir_remote"
+              scp $dir_remote root@$SERVER_IP:/root/$dir_remote
             fi
-        done < $FILE_LIST
-        echo "Upload complete."
+        done
+    echo "Upload complete."
     fi

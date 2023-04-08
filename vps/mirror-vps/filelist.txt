@@ -1,0 +1,4 @@
+/usr/local/etc-bak/*
+/etc/systemd/system/tuic*.service
+/etc/systemd/system/hysteria*.service
+/root/*.txt

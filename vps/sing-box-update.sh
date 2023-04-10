@@ -24,6 +24,7 @@ case "$choice" in
   y|Y ) 
     # Run the release/local/reintall.sh script
     ./release/local/reinstall.sh
+    sing-box version
     ;;
   * ) 
     echo "Aborted."

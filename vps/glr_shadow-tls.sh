@@ -39,10 +39,9 @@ echo -e "5.stoping $BIN_FILE.service in SystemD."
 #systemctl stop {$BIN_FILE.service} >/dev/null 2>&1 || sudo kill $(pidof $BIN_FILE ) >/dev/null 2>&1
 #sudo ss-tproxy stop
 #sleep 2
-## terminate naive thread start
+## terminate running thread
 BIN_FILE_PID=$(ps -ef|grep $BIN_FILE|grep -v grep|grep -v $0|awk '{print $2}')
 #echo $BIN_FILE_PID=$BIN_FILE_PID
-#echo '$0='$0
 if [[ ! -n $BIN_FILE_PID ]]; then 
         echo $BIN_FILE thread is not exist
  else

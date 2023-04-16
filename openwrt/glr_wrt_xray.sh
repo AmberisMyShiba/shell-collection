@@ -17,8 +17,9 @@ ARCH_KEYWORD="linux-64"
 REPO_NAME="XTLS/Xray-core"
 
 while true; do
-  PKG_URL=$(curl -s "https://api.github.com/repos/$REPO_NAME/releases/latest" | grep $ARCH_KEYWORD | grep browser_download_url | sed -n 1p | cut -d : -f 2,3)
-  # 判断PKG_URL是否为空或者对应的文件是否可下载  if [[ -n "$PKG_URL" && "$(curl -s --head $PKG_URL | head -n 1 | grep 200)" != "" ]]; then
+  #PKG_URL=$(curl -s "https://api.github.com/repos/$REPO_NAME/releases/latest" | grep $ARCH_KEYWORD | grep browser_download_url | cut -d : -f 2,3)
+  # 判断PKG_URL是否为空或者对应的文件是否可下载  PKG_URL=$(curl -s "https://api.github.com/repos/$REPO_NAME/releases/latest" | jq ".assets[] | select(.name | contains(\"$ARCH_KEYWORD\"))"|jq -r '.browser_download_url'|sed 2d)
+  if [[ -n "$PKG_URL" || "$(curl -s --head $PKG_URL | head -n 1 | grep 200)" != "" ]]; then
     echo "Successfully obtained the download link: $PKG_URL"
     break
   fi
@@ -31,8 +32,8 @@ done
 VER_LATEST=$(echo $PKG_URL|cut -d / -f8)
 PKG_LATEST=$(echo $BIN_NAME-$VER_LATEST|tr -d ' ')
 PKG_CURR_VER="$($BIN_LOCAL_PATH/$BIN_NAME -version | awk 'NR==1 {print $2}')"
-PKG_DIR=$(echo $PKG_LATEST|sed s/\.tar.\xz//g)
-#PKG_UNZIP_NAME="Xray-linux-64.zip"
+PKG_DIR="tmp/"
+PKG_UNZIP_NAME=$PKG_LATEST.zip
 #PKG_TAR=$(echo $PKG_LATEST|sed s/\.xz\//g)
 #debug point
 colorEcho {RED} "debug:PKG_LATEST=$PKG_LATEST"
@@ -46,7 +47,7 @@ if [ -f "$PKG_LATEST" ];then
   exit 1
 fi
 echo -e "3.Downloading the latest version."
-wget $PKG_URL -q --show-progress
+wget $PKG_URL -q --show-progress -O $PKG_UNZIP_NAME
 echo -e "4.unzip and replace $BIN_NAME bin file"
 if [ ! -f "$PKG_LATEST" ]; then
   colorEcho ${YELLOW} "Not found the $BIN_NAME release,Please Check Downloading file correct!"
@@ -54,28 +55,18 @@ if [ ! -f "$PKG_LATEST" ]; then
 fi
 echo -e PKG_LATEST=$PKG_LATEST
 echo -e PKG_DIR=$PKG_DIR
-#colorEcho ${YELLOW} "file and dir is showed above!"
-
-#xz -d $PKG_LATEST
-#tar -xvf `echo $PKG_LATEST|cut -d . -f 1-5`
-#tar -xvf `echo $PKG_LATEST|sed s/\.xz\//g`
-unzip $PKG_LATEST
+unzip $PKG_UNZIP_NAME -d $PKG_DIR
 colorEcho ${YELLOW} "5.Please asure $BIN_NAME has been stopped!"
 #echo -e "Or you should run:#ps -w|grep $BIN_NAME and kill -9 PID"
-
 #kill -9 `pgrep naive` >/dev/null 2>&1
 #/etc/init.d/shadowsocksr restart
 
 sleep 2
 echo -e $PKG_DIR
-echo -e $PKG_TAR
 #echo -e "the files above will be deleted!"
 colorEcho ${GREEN} "6.Copy latest $BIN_NAME bin files to $BIN_LOCAL_PATH"
 cp -f $PKG_DIR/$BIN_NAME $BIN_LOCAL_PATH/
 echo -e "7.Tring restaring $BIN_NAME.service.May be you should restart it by manual"
-###default="n"
-###read -e -p "Do you want to DEL dowloaded files?" mychoice
-###mychoice="${ac:-${default}}" 
 colorEcho ${GREEN} "8.Cleaning Downloaded files..."
 colorEcho ${YELLOW} "Do you want to DEL(default option)dowloaded files?(y/n)"
   read mychoice leftover

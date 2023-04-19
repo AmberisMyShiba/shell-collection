@@ -80,7 +80,7 @@ fi
 
 # Check for file list
 if [[ $DOWNLOAD==true ]]; then
-   if [[ -n $FILE_LIST ]]; then
+   if [[ -z $FILE_LIST ]]; then
      echo "Please provide the file list path."
      exit 1
    fi

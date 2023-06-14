@@ -16,15 +16,18 @@ main () {
                 win)            arch="x86_64-pc-windows-gnu.exe";;
                 *)                      echo "null arch input,x86_64 will be the deault!";arch="x86_64-unknown-linux-gnu";;
         esac
-url=https://github.com/EAimTY/tuic/releases/download/tuic-$type-$version/tuic-$type-$version-$arch
-if [ "$type" == "server" ]; then
-  wget "$url" 
-elif [ "$type" == "client" ]; then
-  wget "$url" 
-else
-  echo "Unknown type: $type"
-  exit 1
-fi
+        url=https://github.com/EAimTY/tuic/releases/download/tuic-$type-$version/tuic-$type-$version-$arch
+    if [ "$type" == "server" ] || [ "$type" == "client" ]; then
+        wget "$url" || {
+            echo "Error: Failed to download file,please verify input params"
+            exit 1
+        }
+    else
+        echo "Unknown type: $type"
+        exit 1
+    fi
+
 }
 
 main "$@"
+

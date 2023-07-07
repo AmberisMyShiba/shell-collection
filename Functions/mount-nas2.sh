@@ -29,39 +29,35 @@ EOF
 mk_mount_dir () {
 #check if mount point exist,otherwise create dir
 DIR_VIDEO="/mnt/networkshare/nas-video"
-DIR_XUNLEI="/mnt/networkshare/nas-xunlei"
+DIR_TV="/mnt/networkshare/nas-TV-Series"
+DIR_DL="/mnt/networkshare/nas-dl"
 DIR_NETBACKUP="/mnt/networkshare/nas-netbackup"
-if [ ! -d $DIR_VIDEO ]; then
-  	echo "MountPoint not exist!now mkdir to " "$(color_green "$DIR_VIDEO")"
-	mkdir -p $DIR_VIDEO
-fi
+DIR_ARRAY=($DIR_VIDEO $DIR_TV $DIR_DL $DIR_NETBACKUP)
 
-if [ ! -d $DIR_XUNLEI ]; then
-  echo "MountPoint not exist!now mkdir to " "$(color_green "$DIR_XUNLEI")"
-  mkdir -p $DIR_XUNLEI
-fi
-
-if [ ! -d $DIR_NETBACKUP ]; then
-  echo "MountPoint not exist!now mkdir to " "$(color_green "$DIR_NETBACKUP")"
-  mkdir -p $DIR_NETBACKUP
-fi
+for str_dir in ${DIR_ARRAY[@]}; do
+        if [ ! '-d $str_dir' ]; then
+        echo "MountPoint not exist!now mkdir to " "$(color_green "$str_dir")"
+                mkdir -p $str_dir
+        fi
+done
 
 }
 
 mountnas() {
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,file_mode=0777,dir_mode=0777 //192.168.5.168/video /mnt/networkshare/nas-video
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/video /mnt/networkshare/nas-video
 #sleep 1
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,file_mode=0777,dir_mode=0777 //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=id,password=passwd,uid=1000,gid=1000 //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/MTFD /mnt/networkshare/nas-downloads
+#echo 5858 | sudo -S mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
 
 mk_mount_dir
 
 if mount | grep /mnt/networkshare/nas > /dev/null; then
     echo "$(font_bold "It seems like NAS sharing already mounted!")"
 else
-    mount -t cifs -o vers=2.0,user=tef,password=passwd,defaults //192.168.5.168/video /mnt/networkshare/nas-video
-mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/ttdownload /mnt/networkshare/nas-xunlei
-mount -t cifs -o vers=2.0,user=id,password=passwd,defaults //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
+    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,uid=1000,gid=1000 //192.168.5.168/video /mnt/networkshare/nas-video
+    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,uid=1000,gid=1000 //192.168.5.168/MTFD/TV-Series /mnt/networkshare/nas-TV-Series
+    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,uid=1000,gid=1000 //192.168.5.168/MTFD/_dl /mnt/networkshare/nas-dl
+    mount -t cifs -o vers=2.0,user=tef,password=zz2067246@,uid=1000,gid=1000 //192.168.5.168/netbackup /mnt/networkshare/nas-netbackup
     echo "$(color_green "NAS Sharing folders is Mounted")"
 fi
 }
@@ -69,7 +65,7 @@ fi
 umountnas() {
 #echo 5858 | sudo -S umount /mnt/networksahre/{nas-video,nas-xunlei,nas-netbackup}
 
-#umount /mnt/networkshare/{nas-video,nas-xunlei,nas-netbackup}
+#umount /mnt/networkshare/{nas-video,nas-dl,nas-netbackup}
 #check if mount point has been mounted
 if mount | grep /mnt/networkshare/nas > /dev/null; then
     umount /mnt/networkshare/nas-*
@@ -89,11 +85,11 @@ main () {
 [ `whoami` != "root" ] && echo "$fond_bold $(color_yellow "This script must be run as root.")"  && exit 1
 
 case $1 in
-    m|mount)		mountnas;;
-    u|umount)		umountnas;;
-    v|version)		vershow;;
-    h|help)		helpmsg;;
-     *)			echo "$(color_yellow "Unknown option: $arg")"; vershow;helpmsg; return 1;;
+    m|mount)            mountnas;;
+    u|umount)           umountnas;;
+    v|version)          vershow;;
+    h|help)             helpmsg;;
+     *)                 echo "$(color_yellow "Unknown option: $arg")"; vershow;helpmsg; return 1;;
 esac
 return 0
 }

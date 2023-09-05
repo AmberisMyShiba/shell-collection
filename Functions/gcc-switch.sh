@@ -7,7 +7,7 @@ link_dir="/usr/bin"
 gcc_rename() {
 gcc_cur=$(which gcc)
 gcc_ver=$("$gcc_cur" -dumpversion)
-if [ "$gcc_cur"="/usr/bin/gcc" ]; then
+if [ "$gcc_cur"="/usr/bin/gcc" ] && not [ -L "$gcc_cur" ]; then
         echo -e "\033[34m Found /usr/bin/gcc hasn't a version suffix. \033[0m"
         local default="y"
         read -e -p "Do you gree to rename it ?(y/n)" ac
@@ -20,7 +20,6 @@ if [ "$gcc_cur"="/usr/bin/gcc" ]; then
                 n|N)
                         echo -e "\033[32m Please rename /usr/bin/gcc to a version suffix,like /usr/bin/gcc-${gcc_ver}. \033[0m"
                         return 1
-                        exit 1
                         ;;
         esac
 fi
@@ -66,8 +65,11 @@ main() {
     exit 1
   fi
 
-  gcc_rename
-  switch_version "$1"
+        if [ gcc_rename ]; then
+                switch_version "$1"
+        else
+                echo "Exit!"
+        fi
 }
 
 main "$@"

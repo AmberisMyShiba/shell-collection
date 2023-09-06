@@ -1,25 +1,45 @@
 #!/bin/bash
+font_bold() {
+    printf "\e[1m$*\e[0m"
+}
+color_purple() {
+    printf "\e[35m$*\e[0m"
+}
+color_red() {
+    printf "\e[31m$*\e[0m"
+}
+color_green() {
+    printf "\e[32m$*\e[0m"
+}
+color_yellow() {
+    printf "\e[33m$*\e[0m"
+}
 
 link_name="gcc"
 versions_dir="/usr/bin"
 link_dir="/usr/bin"
 
-gcc_rename() {
-gcc_cur=$(which gcc)
-gcc_ver=$("$gcc_cur" -dumpversion)
-if [ "$gcc_cur"="/usr/bin/gcc" ] && not [ -L "$gcc_cur" ]; then
-        echo -e "\033[34m Found /usr/bin/gcc hasn't a version suffix. \033[0m"
+gccplus_rename() {
+if [ $# -lt 1 ]; then
+  echo "$(color_yellow Please input the rename object: gcc or g++)"
+  exit 1
+fi
+gccplus_cur=$(which $1)
+gccplus_ver=$("$gccplus_cur" -dumpversion)
+if [ "$gccplus_cur"=="/usr/bin/gcc" -a ! -L "$gccplus_cur" ]; then
+        echo -e "\033[34m Found /usr/bin/"$1" hasn't a version suffix. \033[0m"
         local default="y"
         read -e -p "Do you gree to rename it ?(y/n)" ac
         ac="${ac:-${default}}"
         case $ac in 
                 y|Y)
-                        mv "$gcc_cur" "$gcc_cur"-${gcc_ver%%.*}
+                        mv "$gccplus_cur" "$gccplus_cur"-${gccplus_ver%%.*}
                         return 0
                         ;;
                 n|N)
-                        echo -e "\033[32m Please rename /usr/bin/gcc to a version suffix,like /usr/bin/gcc-${gcc_ver}. \033[0m"
+                        echo -e "\033[32m Please rename /usr/bin/"$1" to a version suffix,like /usr/bin/gcc-${gccplus_ver}. \033[0m"
                         return 1
+                        exit 1
                         ;;
         esac
 fi
@@ -58,18 +78,16 @@ main() {
     exit 0
   fi
 
-  if [ $# -ne 1 ]; then
-    echo -e "\033[32mUseage:\033[0m" 
+  if [ $# -qe 1 ]; then
+                echo -e "\033[32mUseage:\033[0m" 
     echo -e "\tswitch gcc version:: $0 <version>"
-    echo -e "\tshow gcc version avalible: $0 -l"
+                echo -e "\tshow gcc version avalible: $0 -l"
     exit 1
   fi
 
-        if [ gcc_rename ]; then
-                switch_version "$1"
-        else
-                echo "Exit!"
-        fi
+        gccplus_rename gcc
+        gccplus_rename g++
+  switch_version "$2"
 }
 
 main "$@"

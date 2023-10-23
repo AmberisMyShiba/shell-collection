@@ -24,7 +24,13 @@ done <<< "$TAGS"
 # 询问切换到哪一个tag
 read -p "Which tag (by number or full name) do you want to checkout? " selected_tag
 
-# 检查选择的是编号还是全文，并设置正确的标签值if [[ "$selected_tag" =~ ^[0-9]+$ ]] && [ "$selected_tag" -le ${#tags_array[@]} ]; then
+# 如果用户没有输入任何值，设置默认值为 1
+if [ -z "$selected_tag" ]; then
+    selected_tag="1"
+fi
+
+# 检查选择的是编号还是全文，并设置正确的标签值
+if [[ "$selected_tag" =~ ^[0-9]+$ ]] && [ "$selected_tag" -le ${#tags_array[@]} ]; then
     selected_tag=${tags_array[$selected_tag-1]}
 fi
 

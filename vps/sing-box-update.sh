@@ -45,15 +45,35 @@ fi
 # Print the checkout message
 echo "Checked out the latest tag: $selected_tag"
 
-# Ask the user if they want to continue compiling
+# Ask the user if you want to continue compiling
 read -rp "Do you want to continue compiling? [y/n] " choice
 case "${choice,,}" in
   y|"" )
     # Run the release/local/reintall.sh script
+                # kill sing-box process and reserve sing-box-update's self
+                my_pid=$(pgrep -f $0)
+                sudo systemctl stop sing-box.service
+                kill -9 $(pgrep sing-box|grep -v "$my_pid")
     ./release/local/reinstall.sh
-        sing-box version
+    sing-box version
     ;;
   * )
     echo "Aborted."
     ;;
 esac
+
+# Ask user if you want to upload new version to remote 
+read -rp "Do you want to upload the latest version to remote? [y/n] " choice
+case "${choice,,}" in
+  y|"" )
+    # upload to remote 
+                scp -O ~/go/bin/sing-box bandwagon:/root/go/bin/    
+                [ $? -eq 0 ] && echo "uploded to bandwagon sucess"
+                scp ~/go/bin/sing-box plan:/root/go/bin/    
+                [ $? -eq 0 ] && echo "uploded to plan sucess"
+    ;;
+  * )
+    echo "Cancled uploading to Remote."
+    ;;
+esac
+

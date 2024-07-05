@@ -52,9 +52,11 @@ case "${choice,,}" in
     # Run the release/local/reintall.sh script
                 # kill sing-box process and reserve sing-box-update's self
                 my_pid=$(pgrep -f $0)
-                sudo systemctl stop sing-box.service
                 kill -9 $(pgrep sing-box|grep -v "$my_pid")
     ./release/local/reinstall.sh
+    # add following 2 lines to above 
+    #sudo systemctl stop sing-box.service
+    #sudo kill $(pgrep -x sing-box) 2>/dev/null || true
     sing-box version
     ;;
   * )

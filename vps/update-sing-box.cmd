@@ -9,7 +9,7 @@ cd /d %REPO_PATH% || (
 )
 
 rem 设置max_count变量和count变量
-set max_count=3
+set max_count=2
 set count=0
 
 rem 延迟环境变量扩展
@@ -24,7 +24,10 @@ REM List available tags
 for /L %%i in (1,1,%count%) do (
   rem echo !tag%%i!
   git describe --tags !tag%%i!
-  rem 定义一个变量，储存tag
+    for /F "tokens=*" %%b in ('git describe --tags !tag%%i!') do (
+    set tags[%%i]=%%b
+  )
+  echo tag_hash=!tags[%%i]!
 )
 
 REM Set default if no input
@@ -57,7 +60,7 @@ if %selected_tag% gtr 0 (
 REM Ask if user wants to continue compiling
 set /p choice="Do you want to continue compiling? [y/n] "
 if not defined choice set "choice=y"
-if /i "%choice%"~="y" (
+if /i "%choice%"=="y" (
   rem 开始编译
   for /F "tokens=*" %%c in ('go run ./cmd/internal/read_tag') do (
     set VERSION=%%c
@@ -65,7 +68,9 @@ if /i "%choice%"~="y" (
   echo sing-box VERSION is !VERSION!
   go install -v -trimpath -ldflags "-X \"github.com/sagernet/sing-box/constant.Version=$VERSION\"-s -w -buildid=" -tags with_gvisor,with_clash_api,with_grpc,with_utls,with_ech,with_reality_server,with_quic,with_wireguard,with_acme .\cmd\sing-box
   %GOBIN%\sing-box version
+  cd ..\
 ) else (
+  cd ..\
   echo Aborted.
 )
 

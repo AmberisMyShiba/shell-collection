@@ -2,4 +2,5 @@ git fetch
 git rev-list --tags --max-count=2
 git describe --tags %tag_hash%
 git checkout %tag%
+VERSION=$(CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go run ./cmd/internal/read_tag)
 go install -v -trimpath -ldflags "-X \"github.com/sagernet/sing-box/constant.Version=$VERSION\"-s -w -buildid=" -tags with_gvisor,with_clash_api,with_grpc,with_utls,with_ech,with_reality_server,with_quic,with_wireguard,with_acme .\cmd\sing-box

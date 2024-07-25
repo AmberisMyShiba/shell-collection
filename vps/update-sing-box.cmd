@@ -1,5 +1,4 @@
 @echo off
-REM Replace with the path to the cloned repository
 set "REPO_PATH=sing-box"
 
 REM Move to the repository directory
@@ -7,6 +6,7 @@ cd /d %REPO_PATH% || (
   echo Failed to change directory to %REPO_PATH%
   exit /b 1
 )
+git fetch --tags
 
 rem 设置max_count变量和count变量
 set max_count=2
@@ -27,7 +27,7 @@ for /L %%i in (1,1,%count%) do (
     for /F "tokens=*" %%b in ('git describe --tags !tag%%i!') do (
     set tags[%%i]=%%b
   )
-  echo tag_hash=!tags[%%i]!
+  rem echo tag_hash=!tags[%%i]!
 )
 
 REM Set default if no input
@@ -42,7 +42,9 @@ if %selected_tag% gtr 0 (
   if %selected_tag% leq %count% (
     echo You selected tag %selected_tag%.
     set tag_name=!tags[%selected_tag%]!
-    echo tag_name=!tag_name!
+    echo tag_name:!tag_name!
+    echo Checkout to !tag_name!
+    git checkout !tag_name!
     rem 跳转到编译代码行
     goto :compile
   ) else (
@@ -61,21 +63,16 @@ REM Ask if user wants to continue compiling
 set /p choice="Do you want to continue compiling? [y/n] "
 if not defined choice set "choice=y"
 if /i "%choice%"=="y" (
-  rem 开始编译
+  rem 开始编译 
   for /F "tokens=*" %%c in ('go run ./cmd/internal/read_tag') do (
     set VERSION=%%c
   )
   echo sing-box VERSION is !VERSION!
   go install -v -trimpath -ldflags "-X \"github.com/sagernet/sing-box/constant.Version=!VERSION!\"-s -w -buildid=" -tags with_gvisor,with_clash_api,with_grpc,with_utls,with_ech,with_reality_server,with_quic,with_wireguard,with_acme .\cmd\sing-box
-
-
-
-
-
   %GOBIN%\sing-box version
-  cd ..\
+  cd /d %~dp0
 ) else (
-  cd ..\
+  cd /d %~dp0
   echo Aborted.
 )
 
